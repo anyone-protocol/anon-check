@@ -118,7 +118,7 @@ def main(consensuses, exit_lists):
 
 
 def print_help(c):
-    print "Usage:", sys.argv[0], "-n <int>"
+    print("Usage:", sys.argv[0], "-n <int>")
     sys.exit(c)
 
 if __name__ == "__main__":
