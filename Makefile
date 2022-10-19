@@ -60,8 +60,8 @@ exits: data/consensus data/exit-addresses data/cached-descriptors
 
 locale/:
 	rm -rf locale
-	git clone -b torcheck_completed \
-		https://git.torproject.org/translation.git locale
+	git clone -b torcheck \
+		https://gitlab.torproject.org/tpo/translation.git locale
 	pushd locale; \
 	for f in *; do \
 		if [ "$$f" != "templates" ]; then \
