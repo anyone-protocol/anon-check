@@ -65,7 +65,7 @@ msgstr ""
 msgid "Donate to Support Tor"
 msgstr ""
 
-msgid "Tor Q&A Site"
+msgid "Tor Forum"
 msgstr ""
 
 msgid "Volunteer"
