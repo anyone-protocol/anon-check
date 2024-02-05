@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
-start: exits i18n
-	@./check
+start: exits
+	@./check.git
 
 collector_url = https://collector.torproject.org/recent/
 consensuses_dir = relay-descriptors/consensuses/
@@ -55,7 +55,7 @@ data/cached-descriptors: descriptors
 
 exits: data/consensus data/exit-addresses data/cached-descriptors
 	@echo Generating exit-policies file
-	@python scripts/exitips.py
+	@python3 scripts/exitips.py
 	@echo Done
 
 locale/:
@@ -101,7 +101,7 @@ profile: build
 		-benchtime 40s -bench "$(filter)"
 
 install: build
-	mv check /usr/local/bin/check
+	mv check.git /usr/local/bin/check
 	cp scripts/check.init /etc/init.d/check
 	update-rc.d check defaults
 
