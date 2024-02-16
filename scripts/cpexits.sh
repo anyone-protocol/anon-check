@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
-echo "Hello world" >> /var/log/cron.log 2>&1
-
 CHECK=/opt/check
-TORDATA=/opt/check/tor-data
+TORDATA=/opt/check/data/anon-data
 # DNSEL=/srv/tordnsel.torproject.org
 NOW=$(date +"%Y-%m-%d-%H-%M-%S")
 
-find $CHECK/data/exit-lists -type f -mtime +1 -delete
+#find $CHECK/data/exit-lists -type f -mtime +1 -delete
 # cat $DNSEL/lists/latest > $CHECK/data/exit-lists/$NOW
 
 find $CHECK/data/consensuses -type f -mtime +1 -delete

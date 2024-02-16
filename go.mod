@@ -1,4 +1,4 @@
-module git.torproject.org/check.git
+module git.torproject.org/check
 
 go 1.11
 

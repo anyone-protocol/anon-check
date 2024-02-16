@@ -3,12 +3,11 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/samuel/go-gettext/gettext"
 	"log"
 	"net/http"
 	"os"
 	"path"
-
-	"github.com/samuel/go-gettext/gettext"
 )
 
 func main() {
