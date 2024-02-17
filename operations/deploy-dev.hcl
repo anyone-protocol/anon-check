@@ -103,8 +103,7 @@ job "anon-check-dev" {
         image   = "svforte/anon-dev"
         force_pull = true
         volumes = [
-          "local/anonrc:/etc/anon/anonrc",
-          "local/data:/var/lib/anon"
+          "local/anonrc:/etc/anon/anonrc"
         ]
       }
 
