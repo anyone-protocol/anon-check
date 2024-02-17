@@ -47,7 +47,7 @@ func main() {
 	}
 	Locales := GetLocaleList(*basePath)
 
-	// Load Tor exits and listen for SIGUSR2 to reload
+	// Load Anon exits and listen for SIGUSR2 to reload
 	exits := new(Exits)
 	exits.Run(path.Join(*basePath, "data/exit-policies"))
 

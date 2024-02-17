@@ -164,7 +164,7 @@ func (e *Exits) GetAllExits(ap AddressPort, tminus int, fn func(string, string, 
 
 var DefaultTarget = AddressPort{"38.229.72.22", 443}
 
-func (e *Exits) PreComputeTorList() {
+func (e *Exits) PreComputeAnonList() {
 	newmap := make(map[string]string)
 	e.GetAllExits(DefaultTarget, 16, func(ip string, fingerprint string, _ int) {
 		newmap[ip] = fingerprint
@@ -249,7 +249,7 @@ func (e *Exits) Load(source io.Reader, update bool) error {
 
 	e.Update(exits, update)
 	e.UpdateTime = time.Now()
-	e.PreComputeTorList()
+	e.PreComputeAnonList()
 	return nil
 }
 

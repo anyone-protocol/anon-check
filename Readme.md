@@ -34,7 +34,7 @@ Please run the tests before sending a pull request:
 
 ## Production
 
-The data that `make start` pulls in will quickly become stale. What you want to do is run a `tor` instance with the following configurations in your `torrc`:
+The data that `make start` pulls in will quickly become stale. What you want to do is run an `anon` instance with the following configurations in your `anonrc`:
 
     FetchDirInfoEarly 1
     FetchDirInfoExtraEarly 1
