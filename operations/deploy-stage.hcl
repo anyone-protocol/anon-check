@@ -15,7 +15,7 @@ job "anon-check-stage" {
     network {
       #      mode = "bridge"
       port "http-port" {
-        static = 9088
+        static = 9188
         to     = 8000
         #        host_network = "wireguard"
       }
@@ -47,7 +47,7 @@ job "anon-check-stage" {
       #      }
 
       config {
-        image   = "svforte/anon-check:latest-stage"
+        image   = "svforte/anon-check"
         force_pull = true
         ports   = ["http-port"]
         volumes = [
@@ -114,11 +114,6 @@ job "anon-check-stage" {
       resources {
         cpu    = 256
         memory = 256
-      }
-
-      lifecycle {
-        hook    = "prestart"
-        sidecar = false
       }
 
       template {

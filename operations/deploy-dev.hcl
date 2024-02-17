@@ -116,11 +116,6 @@ job "anon-check-dev" {
         memory = 256
       }
 
-      lifecycle {
-        hook    = "prestart"
-        sidecar = false
-      }
-
       template {
         change_mode = "noop"
         data        = <<EOH
