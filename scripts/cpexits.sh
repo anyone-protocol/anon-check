@@ -15,4 +15,4 @@ cat $TORDATA/cached-descriptors $TORDATA/cached-descriptors.new > $CHECK/data/ca
 
 cd $CHECK
 scripts/exitips.py -n 1
-#kill -s SIGUSR2 `cat check.pid`
+kill -s SIGUSR2 `cat /var/run/check.pid`

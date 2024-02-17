@@ -12,4 +12,3 @@
 .idea
 *.iml
 docker/check-data
-docker/anonrc

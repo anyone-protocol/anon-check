@@ -122,7 +122,7 @@ job "anon-check-dev" {
         data        = <<EOH
 DataDirectory /var/lib/anon/anon-data
 
-Nickname ForteAnonCheckRelay
+Nickname ForteAnonCheckDev
 
 FetchDirInfoEarly 1
 FetchDirInfoExtraEarly 1

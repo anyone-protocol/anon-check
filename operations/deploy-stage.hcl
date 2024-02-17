@@ -122,7 +122,7 @@ job "anon-check-stage" {
         data        = <<EOH
 DataDirectory /var/lib/anon/anon-data
 
-Nickname ForteAnonCheckRelay
+Nickname ForteAnonCheckStage
 
 FetchDirInfoEarly 1
 FetchDirInfoExtraEarly 1
