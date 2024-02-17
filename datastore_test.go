@@ -49,9 +49,9 @@ func checkDump(t *testing.T, dumpStr string, expected ...string) {
 	}
 }
 
-func (e *Exits) assertIsTor(t *testing.T, ip string, expected bool) {
-	if _, ok := e.IsTor(ip); ok != expected {
-		t.Errorf("Failed IsTor Assert for %s, got %v but wanted %v", ip, ok, expected)
+func (e *Exits) assertIsAnon(t *testing.T, ip string, expected bool) {
+	if _, ok := e.IsAnon(ip); ok != expected {
+		t.Errorf("Failed IsAnon Assert for %s, got %v but wanted %v", ip, ok, expected)
 	}
 }
 
@@ -70,10 +70,10 @@ func TestExitListLoading(t *testing.T) {
 	exits := setupExitList(t, testData)
 
 	// Valid tor exit
-	exits.assertIsTor(t, "91.121.43.80", true)
+	exits.assertIsAnon(t, "91.121.43.80", true)
 
 	// Invalid tor exit
-	exits.assertIsTor(t, "91.121.43.4", false)
+	exits.assertIsAnon(t, "91.121.43.4", false)
 
 	// check both exits are listed for 995
 	// Accept either ordering of output
@@ -181,13 +181,13 @@ func TestPastHours(t *testing.T) {
 	expectDump(t, exits, "123.123.123.123", 80, "111.111.111.111")
 }
 
-func BenchmarkIsTor(b *testing.B) {
+func BenchmarkIsAnon(b *testing.B) {
 	e := new(Exits)
 	e.LoadFromFile("data/exit-policies", false)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		e.IsTor("91.121.43.80")
-		e.IsTor("91.121.43.4")
+		e.IsAnon("91.121.43.80")
+		e.IsAnon("91.121.43.4")
 	}
 }
 

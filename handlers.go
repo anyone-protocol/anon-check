@@ -17,7 +17,7 @@ import (
 
 // page model
 type Page struct {
-	IsTor       bool
+	IsAnon      bool
 	NotUpToDate bool
 	Small       bool
 	NotTBB      bool
@@ -40,19 +40,19 @@ func RootHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain
 
 		var (
 			err         error
-			isTor       bool
+			isAnon      bool
 			host        string
 			onOff       string
 			fingerprint string
 		)
 
 		if host, err = GetHost(r); err == nil {
-			fingerprint, isTor = Exits.IsTor(host)
+			fingerprint, isAnon = Exits.IsAnon(host)
 		}
 
 		// short circuit for torbutton
 		if IsParamSet(r, "TorButton") {
-			WriteHTMLBuf(w, r, Layout, domain, "torbutton.html", Page{IsTor: isTor})
+			WriteHTMLBuf(w, r, Layout, domain, "torbutton.html", Page{IsAnon: isAnon})
 			return
 		}
 
@@ -66,7 +66,7 @@ func RootHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain
 
 		// string used for classes and such
 		// in the template
-		if isTor {
+		if isAnon {
 			if notTBB || notUpToDate {
 				onOff = "not"
 			} else {
@@ -78,7 +78,7 @@ func RootHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain
 
 		// instance of your page model
 		p := Page{
-			isTor,
+			isAnon,
 			notUpToDate,
 			IsParamSet(r, "small"),
 			notTBB,
@@ -96,22 +96,22 @@ func RootHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain
 }
 
 type IPResp struct {
-	IsTor bool
-	IP    string
+	IsAnon bool
+	IP     string
 }
 
 func APIHandler(Exits *Exits) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		var (
-			err   error
-			isTor bool
-			host  string
+			err    error
+			isAnon bool
+			host   string
 		)
 		if host, err = GetHost(r); err == nil {
-			_, isTor = Exits.IsTor(host)
+			_, isAnon = Exits.IsAnon(host)
 		}
-		ip, _ := json.Marshal(IPResp{isTor, host})
+		ip, _ := json.Marshal(IPResp{isAnon, host})
 		w.Write(ip)
 	}
 }
