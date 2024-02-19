@@ -46,14 +46,15 @@ func main() {
 	// files
 	files := http.FileServer(http.Dir(path.Join(*basePath, "public")))
 	Phttp := http.NewServeMux()
-	Phttp.Handle("/torcheck/", http.StripPrefix("/torcheck/", files))
+	// TODO - Unused routes are disabled. Enable them if needed.
+	//Phttp.Handle("/torcheck/", http.StripPrefix("/torcheck/", files))
 	Phttp.Handle("/", files)
 
 	// routes
 	http.HandleFunc("/", RootHandler(CompileTemplate(*basePath, "index.html"), exits, Phttp))
 	bulk := BulkHandler(CompileTemplate(*basePath, "bulk.html"), exits)
-	http.HandleFunc("/torbulkexitlist", bulk)
-	http.HandleFunc("/cgi-bin/TorBulkExitList.py", bulk)
+	http.HandleFunc("/anonbulkexitlist", bulk)
+	//http.HandleFunc("/cgi-bin/TorBulkExitList.py", bulk)
 	http.HandleFunc("/api/bulk", bulk)
 	http.HandleFunc("/api/ip", APIHandler(exits))
 

@@ -63,7 +63,6 @@ func CompileTemplate(base string, templateName string) *template.Template {
 		Layout = template.New("")
 		Layout = template.Must(Layout.ParseFiles(
 			path.Join(base, "public/base.html"),
-			path.Join(base, "public/torbutton.html"),
 		))
 	}
 	l, err := Layout.Clone()

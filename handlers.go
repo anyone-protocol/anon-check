@@ -48,12 +48,6 @@ func RootHandler(Layout *template.Template, Exits *Exits, Phttp *http.ServeMux) 
 			fingerprint, isAnon = Exits.IsAnon(host)
 		}
 
-		// short circuit for torbutton
-		if IsParamSet(r, "TorButton") {
-			WriteHTMLBuf(w, r, Layout, "torbutton.html", Page{IsAnon: isAnon})
-			return
-		}
-
 		// try to determine if it's TBB
 		notTBB := !LikelyTBB(r.UserAgent())
 
@@ -126,8 +120,8 @@ func BulkHandler(Layout *template.Template, Exits *Exits) http.HandlerFunc {
 			return
 		}
 
-		port, port_str := GetQS(q, "port", 80)
-		n, n_str := GetQS(q, "n", 16)
+		port, _ := GetQS(q, "port", 80)
+		n, _ := GetQS(q, "n", 16)
 
 		w.Header().Set("Last-Modified", Exits.UpdateTime.UTC().Format(http.TimeFormat))
 
@@ -136,7 +130,7 @@ func BulkHandler(Layout *template.Template, Exits *Exits) http.HandlerFunc {
 			Exits.DumpJSON(w, n, ip, port)
 		} else {
 			str := fmt.Sprintf("# This is a list of all Anon exit nodes from the past %d hours that can contact %s on port %d #\n", n, ip, port)
-			str += fmt.Sprintf("# You can update this list by visiting https://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=%s%s%s #\n", ip, port_str, n_str)
+			//str += fmt.Sprintf("# You can update this list by visiting https://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=%s%s%s #\n", ip, port_str, n_str)
 			str += fmt.Sprintf("# This file was generated on %v #\n", Exits.UpdateTime.UTC().Format(time.UnixDate))
 			fmt.Fprintf(w, str)
 			Exits.Dump(w, n, ip, port)
