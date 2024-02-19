@@ -1,11 +1,11 @@
 SHELL := /bin/bash
 
-start: exits i18n
+start: exits
 	@./check
 
-collector_url = https://collector.torproject.org/recent/
+collector_url = ${COLLECTOR_HOST}/recent/
 consensuses_dir = relay-descriptors/consensuses/
-exit_lists_dir = exit-lists/
+#exit_lists_dir = exit-lists/
 descriptors_dir = relay-descriptors/server-descriptors/
 
 data/:
@@ -17,8 +17,8 @@ data/descriptors/: data/
 data/consensuses/: data/
 	@mkdir -p data/consensuses
 
-data/exit-lists/: data/
-	@mkdir -p data/exit-lists
+#data/exit-lists/: data/
+#	@mkdir -p data/exit-lists
 
 data/consensus: data/consensuses/
 	@echo "Getting latest consensus documents"
@@ -29,14 +29,15 @@ data/consensus: data/consensuses/
 		popd
 	@echo Consensuses written
 
-data/exit-addresses: data/exit-lists/
-	@echo "Getting latest exit lists"
-	@find data/exit-lists -mtime +31 | xargs rm -f
-	@pushd data/exit-lists/; \
-		wget -r -nH -nd -nc --no-parent --reject "index.html*" \
-			$(collector_url)$(exit_lists_dir); \
-		popd
-	@echo Exit lists written
+#TODO - exit-addresses is based on TorDNSEL, which is not working now. All TorDNSEL code is commented out
+#data/exit-addresses: data/exit-lists/
+#	@echo "Getting latest exit lists"
+#	@find data/exit-lists -mtime +31 | xargs rm -f
+#	@pushd data/exit-lists/; \
+#		wget -r -nH -nd -nc --no-parent --reject "index.html*" \
+#			$(collector_url)$(exit_lists_dir); \
+#		popd
+#	@echo Exit lists written
 
 descriptors: data/descriptors/
 	@echo "Getting latest descriptors (This may take a while)"
@@ -53,9 +54,9 @@ data/cached-descriptors: descriptors
 	find data/descriptors -type f -mmin -60 | xargs cat > data/cached-descriptors
 	@echo "Done"
 
-exits: data/consensus data/exit-addresses data/cached-descriptors
+exits: data/consensus data/cached-descriptors # data/exit-addresses
 	@echo Generating exit-policies file
-	@python scripts/exitips.py
+	@python3 scripts/exitips.py
 	@echo Done
 
 locale/:

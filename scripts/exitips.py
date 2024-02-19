@@ -14,7 +14,6 @@ from math import floor
 from stem.descriptor import parse_file
 from stem.exit_policy import AddressType
 
-
 class Router():
     def __init__(self, router, tminus):
         self.Fingerprint = router.fingerprint
@@ -24,7 +23,6 @@ class Router():
         self.Rules = []
         self.Tminus = tminus
 
-
 def get_hours(td):
     try:
         s = td.total_seconds()
@@ -32,7 +30,6 @@ def get_hours(td):
         # workaround for py2.6
         s = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 1e6) / 1e6
     return int(floor(s / 3600))
-
 
 def main(consensuses, exit_lists):
     exits = {}
@@ -71,16 +68,17 @@ def main(consensuses, exit_lists):
         if len(m) == 0:
             continue
 
+        #TODO: TorDNSEL is not working right now
         # update exit addresses with data from TorDNSEL
-        for descriptor in parse_file("data/exit-lists/" + m[0],
-                                     "tordnsel 1.0", validate=False):
-            e = exits.get(descriptor.fingerprint, None)
-            if e is not None:
-                if e.Tminus == t:
-                    e.Address = []
-                for a in descriptor.exit_addresses:
-                    if a[0] not in e.Address:
-                        e.Address.append(a[0])
+        # for descriptor in parse_file("data/exit-lists/" + m[0],
+        #                              "tordnsel 1.0", validate=False):
+        #     e = exits.get(descriptor.fingerprint, None)
+        #     if e is not None:
+        #         if e.Tminus == t:
+        #             e.Address = []
+        #         for a in descriptor.exit_addresses:
+        #             if a[0] not in e.Address:
+        #                 e.Address.append(a[0])
 
     # update all with server descriptor info
     for descriptor in parse_file("data/cached-descriptors",
@@ -116,6 +114,8 @@ def main(consensuses, exit_lists):
             if exits[e].IsAllowed:
                 exit_file.write(json.dumps(exits[e].__dict__) + "\n")
 
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[{current_time}] - Ok!")
 
 def print_help(c):
     print("Usage:", sys.argv[0], "-n <int>")
@@ -126,7 +126,8 @@ if __name__ == "__main__":
     # data
     consensuses = listdir("data/consensuses")
     consensuses.sort(reverse=True)
-    exit_lists = listdir("data/exit-lists")
+    # exit_lists = listdir("data/exit-lists")
+    exit_lists = []
 
     # args
     try:
