@@ -51,14 +51,13 @@ job "anon-check-stage" {
         force_pull = true
         ports      = ["http-port"]
         volumes    = [
-          #          "local/logs/:/opt/check/data/logs",
-          "local/data/:/opt/check/data/"
+          "local/logs/:/opt/check/data/logs",
         ]
       }
 
-      #      vault {
-      #      	policies = ["ator-network-read"]
-      #      }
+      vault {
+        policies = ["ator-network-read"]
+      }
 
       resources {
         cpu    = 256
