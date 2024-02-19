@@ -6,18 +6,18 @@ job "anon-check-stage" {
   group "anon-check-stage-group" {
     count = 1
 
-    #    volume "anon-check-data" {
-    #      type      = "host"
-    #      read_only = false
-    #      source    = "anon-check-stage"
-    #    }
+        volume "anon-check-data" {
+          type      = "host"
+          read_only = false
+          source    = "anon-check-stage"
+        }
 
     network {
-      #      mode = "bridge"
+      mode = "bridge"
       port "http-port" {
         static = 9188
         to     = 8000
-        #        host_network = "wireguard"
+        host_network = "wireguard"
       }
     }
 
@@ -40,11 +40,11 @@ job "anon-check-stage" {
         env         = true
       }
 
-      #      volume_mount {
-      #        volume      = "anon-check-data"
-      #        destination = "/opt/check/data"
-      #        read_only   = false
-      #      }
+      volume_mount {
+        volume      = "anon-check-data"
+        destination = "/opt/check/data"
+        read_only   = false
+      }
 
       config {
         image   = "svforte/anon-check"
@@ -93,11 +93,11 @@ job "anon-check-stage" {
     task "anon-check-relay-stage-task" {
       driver = "docker"
 
-#      volume_mount {
-#        volume      = "anon-check-data"
-#        destination = "/var/lib/anon"
-#        read_only   = true
-#      }
+      volume_mount {
+        volume      = "anon-check-data"
+        destination = "/var/lib/anon"
+        read_only   = true
+      }
 
       config {
         image   = "svforte/anon-stage"
@@ -107,9 +107,9 @@ job "anon-check-stage" {
         ]
       }
 
-      #      vault {
-      #      	policies = ["ator-network-read"]
-      #      }
+      vault {
+          policies = ["ator-network-read"]
+      }
 
       resources {
         cpu    = 256

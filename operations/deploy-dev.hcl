@@ -6,18 +6,18 @@ job "anon-check-dev" {
   group "anon-check-dev-group" {
     count = 1
 
-#    volume "anon-check-data" {
-#      type      = "host"
-#      read_only = false
-#      source    = "anon-check-dev"
-#    }
+    volume "anon-check-data" {
+      type      = "host"
+      read_only = false
+      source    = "anon-check-dev"
+    }
 
     network {
-#      mode = "bridge"
+      mode = "bridge"
       port "http-port" {
         static = 9088
         to     = 8000
-#        host_network = "wireguard"
+        host_network = "wireguard"
       }
     }
 
@@ -40,25 +40,24 @@ job "anon-check-dev" {
         env         = true
       }
 
-#      volume_mount {
-#        volume      = "anon-check-data"
-#        destination = "/opt/check/data"
-#        read_only   = false
-#      }
+      volume_mount {
+        volume      = "anon-check-data"
+        destination = "/opt/check/data"
+        read_only   = false
+      }
 
       config {
         image   = "svforte/anon-check:latest-dev"
         force_pull = true
         ports   = ["http-port"]
         volumes = [
-#          "local/logs/:/opt/check/data/logs",
-          "local/data/:/opt/check/data/"
+          "local/logs/:/opt/check/data/logs"
         ]
       }
 
-#      vault {
-#      	policies = ["ator-network-read"]
-#      }
+      vault {
+      	policies = ["ator-network-read"]
+      }
 
       resources {
         cpu    = 256
@@ -93,11 +92,11 @@ job "anon-check-dev" {
     task "anon-check-relay-dev-task" {
       driver = "docker"
 
-#      volume_mount {
-#        volume      = "anon-check-data"
-#        destination = "/var/lib/anon"
-#        read_only   = true
-#      }
+      volume_mount {
+        volume      = "anon-check-data"
+        destination = "/var/lib/anon"
+        read_only   = true
+      }
 
       config {
         image   = "svforte/anon-dev"
@@ -107,9 +106,9 @@ job "anon-check-dev" {
         ]
       }
 
-#      vault {
-#      	policies = ["ator-network-read"]
-#      }
+      vault {
+      	policies = ["ator-network-read"]
+      }
 
       resources {
         cpu    = 256
