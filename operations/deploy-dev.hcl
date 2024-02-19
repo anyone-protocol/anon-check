@@ -34,7 +34,7 @@ job "anon-check-dev" {
 	{{- range nomadService "collector-dev" }}
   	    COLLECTOR_HOST="http://{{ .Address }}:{{ .Port }}"
 	{{ end -}}
-            INTERVAL_MINUTES="1"
+            INTERVAL_MINUTES="5"
             EOH
         destination = "secrets/file.env"
         env         = true
