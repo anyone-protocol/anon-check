@@ -25,10 +25,9 @@ type Page struct {
 	OnOff       string
 	Lang        string
 	IP          string
-	Locales     map[string]string
 }
 
-func RootHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain, Phttp *http.ServeMux, Locales map[string]string) http.HandlerFunc {
+func RootHandler(Layout *template.Template, Exits *Exits, Phttp *http.ServeMux) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 
@@ -52,7 +51,7 @@ func RootHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain
 
 		// short circuit for torbutton
 		if IsParamSet(r, "TorButton") {
-			WriteHTMLBuf(w, r, Layout, domain, "torbutton.html", Page{IsAnon: isAnon})
+			WriteHTMLBuf(w, r, Layout, "torbutton.html", Page{IsAnon: isAnon})
 			return
 		}
 
@@ -86,11 +85,10 @@ func RootHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain
 			onOff,
 			Lang(r),
 			host,
-			Locales,
 		}
 
 		// render the template
-		WriteHTMLBuf(w, r, Layout, domain, "index.html", p)
+		WriteHTMLBuf(w, r, Layout, "index.html", p)
 	}
 
 }
@@ -116,7 +114,7 @@ func APIHandler(Exits *Exits) http.HandlerFunc {
 	}
 }
 
-func BulkHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain) http.HandlerFunc {
+func BulkHandler(Layout *template.Template, Exits *Exits) http.HandlerFunc {
 
 	ApiPath := regexp.MustCompile("^/api/")
 
@@ -125,7 +123,7 @@ func BulkHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain
 
 		ip := q.Get("ip")
 		if net.ParseIP(ip) == nil {
-			WriteHTMLBuf(w, r, Layout, domain, "bulk.html", Page{Lang: "en"})
+			WriteHTMLBuf(w, r, Layout, "bulk.html", Page{Lang: "en"})
 			return
 		}
 
@@ -149,13 +147,13 @@ func BulkHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain
 
 }
 
-func WriteHTMLBuf(w http.ResponseWriter, r *http.Request, Layout *template.Template, domain *gettext.Domain, tmp string, p Page) {
+func WriteHTMLBuf(w http.ResponseWriter, r *http.Request, Layout *template.Template, tmp string, p Page) {
 	buf := new(bytes.Buffer)
 
 	// render template
 	if err := Layout.ExecuteTemplate(buf, tmp, p); err != nil {
 		log.Printf("Layout.ExecuteTemplate: %v", err)
-		http.Error(w, domain.GetText(p.Lang, "Sorry, your query failed or an unexpected response was received."), http.StatusInternalServerError)
+		http.Error(w, "Sorry, your query failed or an unexpected response was received.", http.StatusInternalServerError)
 		return
 	}
 

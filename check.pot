@@ -15,7 +15,7 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid "Congratulations. This browser is configured to use Tor."
+msgid "Congratulations. This browser is configured to use Anon."
 msgstr ""
 
 msgid ""
@@ -32,7 +32,7 @@ msgid ""
 "download page</a>"
 msgstr ""
 
-msgid "Sorry. You are not using Tor."
+msgid "Sorry. You are not using Anon."
 msgstr ""
 
 msgid ""

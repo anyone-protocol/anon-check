@@ -1,9 +1,9 @@
 {{ template "base.html" . }}
 {{ define "title" }}
     {{ if .IsAnon }}
-      {{ GetText .Lang "Congratulations. This browser is configured to use Tor." }}
+      {{ "Congratulations. This browser is configured to use Anon." }}
     {{ else }}
-      {{ GetText .Lang "Sorry. You are not using Tor." }}
+      {{ "Sorry. You are not using Anon." }}
     {{ end }}
 {{ end }}
 {{ define "favicon" }}tor-{{ .OnOff }}.png{{ end }}
@@ -59,29 +59,15 @@
     padding: 0;
   }
 {{ end }}
-{{ define "head" }}
-<form action="/" method="get" id="lang">
-  {{ if .Small }}<input type="hidden" name="small" value="1" />{{ end }}
-  {{ if And .IsAnon .NotUpToDate }}<input type="hidden" name="uptodate" value="0" />{{ end }}
-  <label for="lang" class="small">{{ GetText .Lang "This page is also available in the following languages:" }}</label>
-  <select id="cl" name="lang">
-    {{ $out := . }}
-    {{ range $k, $i := .Locales }}
-      <option value="{{ $k }}" {{ if Equal $k $out.Lang }}selected="selected"{{ end }}>{{ $i | UnEscaped }}</option>
-    {{ end }}
-  </select>
-  <input type="submit" value="{{ GetText .Lang "Go" }}" />
-</form>
-{{ end }}
 {{ define "body" }}
   {{ if Not .Small }}
     <img src="/torcheck/img/tor-{{ .OnOff }}.png" class="onion" />
   {{ end }}
   <h1 class="{{ .OnOff }}">
     {{ if .IsAnon }}
-      {{ GetText .Lang "Congratulations. This browser is configured to use Tor." }}
+      {{ "Congratulations. This browser is configured to use Anon." }}
     {{ else }}
-      {{ GetText .Lang "Sorry. You are not using Tor." }}
+      {{ "Sorry. You are not using Anon." }}
     {{ end }}
   </h1>
   <p>{{ GetText .Lang "Your IP address appears to be: " }} <strong>{{ .IP }}</strong></p>
