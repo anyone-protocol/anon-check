@@ -6,17 +6,17 @@ job "anon-check-stage" {
   group "anon-check-stage-group" {
     count = 1
 
-        volume "anon-check-data" {
-          type      = "host"
-          read_only = false
-          source    = "anon-check-stage"
-        }
+    volume "anon-check-data" {
+      type      = "host"
+      read_only = false
+      source    = "anon-check-stage"
+    }
 
     network {
       mode = "bridge"
       port "http-port" {
-        static = 9188
-        to     = 8000
+        static       = 9188
+        to           = 8000
         host_network = "wireguard"
       }
     }
@@ -30,7 +30,7 @@ job "anon-check-stage" {
       driver = "docker"
 
       template {
-        data = <<EOH
+        data        = <<EOH
 	{{- range nomadService "collector-stage" }}
   	    COLLECTOR_HOST="http://{{ .Address }}:{{ .Port }}"
 	{{ end -}}
@@ -47,10 +47,10 @@ job "anon-check-stage" {
       }
 
       config {
-        image   = "svforte/anon-check"
+        image      = "svforte/anon-check"
         force_pull = true
-        ports   = ["http-port"]
-        volumes = [
+        ports      = ["http-port"]
+        volumes    = [
           #          "local/logs/:/opt/check/data/logs",
           "local/data/:/opt/check/data/"
         ]
@@ -96,19 +96,19 @@ job "anon-check-stage" {
       volume_mount {
         volume      = "anon-check-data"
         destination = "/var/lib/anon"
-        read_only   = true
+        read_only   = false
       }
 
       config {
-        image   = "svforte/anon-stage"
+        image      = "svforte/anon-stage"
         force_pull = true
-        volumes = [
+        volumes    = [
           "local/anonrc:/etc/anon/anonrc"
         ]
       }
 
       vault {
-          policies = ["ator-network-read"]
+        policies = ["ator-network-read"]
       }
 
       resources {
@@ -120,6 +120,8 @@ job "anon-check-stage" {
         change_mode = "noop"
         data        = <<EOH
 DataDirectory /var/lib/anon/anon-data
+
+User anond
 
 Nickname ForteAnonCheckStage
 

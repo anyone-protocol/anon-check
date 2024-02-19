@@ -15,8 +15,8 @@ job "anon-check-dev" {
     network {
       mode = "bridge"
       port "http-port" {
-        static = 9088
-        to     = 8000
+        static       = 9088
+        to           = 8000
         host_network = "wireguard"
       }
     }
@@ -30,7 +30,7 @@ job "anon-check-dev" {
       driver = "docker"
 
       template {
-        data = <<EOH
+        data        = <<EOH
 	{{- range nomadService "collector-dev" }}
   	    COLLECTOR_HOST="http://{{ .Address }}:{{ .Port }}"
 	{{ end -}}
@@ -47,16 +47,16 @@ job "anon-check-dev" {
       }
 
       config {
-        image   = "svforte/anon-check:latest-dev"
+        image      = "svforte/anon-check:latest-dev"
         force_pull = true
-        ports   = ["http-port"]
-        volumes = [
+        ports      = ["http-port"]
+        volumes    = [
           "local/logs/:/opt/check/data/logs"
         ]
       }
 
       vault {
-      	policies = ["ator-network-read"]
+        policies = ["ator-network-read"]
       }
 
       resources {
@@ -95,19 +95,19 @@ job "anon-check-dev" {
       volume_mount {
         volume      = "anon-check-data"
         destination = "/var/lib/anon"
-        read_only   = true
+        read_only   = false
       }
 
       config {
-        image   = "svforte/anon-dev"
+        image      = "svforte/anon-dev"
         force_pull = true
-        volumes = [
+        volumes    = [
           "local/anonrc:/etc/anon/anonrc"
         ]
       }
 
       vault {
-      	policies = ["ator-network-read"]
+        policies = ["ator-network-read"]
       }
 
       resources {
@@ -119,6 +119,8 @@ job "anon-check-dev" {
         change_mode = "noop"
         data        = <<EOH
 DataDirectory /var/lib/anon/anon-data
+
+User anond
 
 Nickname ForteAnonCheckDev
 
