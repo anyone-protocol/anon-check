@@ -6,18 +6,18 @@ job "anon-check-stage" {
   group "anon-check-stage-group" {
     count = 1
 
-    #    volume "anon-check-data" {
-    #      type      = "host"
-    #      read_only = false
-    #      source    = "anon-check-stage"
-    #    }
+    volume "anon-check-data" {
+      type      = "host"
+      read_only = false
+      source    = "anon-check-stage"
+    }
 
     network {
-      #      mode = "bridge"
+      mode = "bridge"
       port "http-port" {
-        static = 9188
-        to     = 8000
-        #        host_network = "wireguard"
+        static       = 9188
+        to           = 8000
+        host_network = "wireguard"
       }
     }
 
@@ -30,35 +30,34 @@ job "anon-check-stage" {
       driver = "docker"
 
       template {
-        data = <<EOH
+        data        = <<EOH
 	{{- range nomadService "collector-stage" }}
   	    COLLECTOR_HOST="http://{{ .Address }}:{{ .Port }}"
 	{{ end -}}
-            INTERVAL_MINUTES="1"
+            INTERVAL_MINUTES="5"
             EOH
         destination = "secrets/file.env"
         env         = true
       }
 
-      #      volume_mount {
-      #        volume      = "anon-check-data"
-      #        destination = "/opt/check/data"
-      #        read_only   = false
-      #      }
+      volume_mount {
+        volume      = "anon-check-data"
+        destination = "/opt/check/data"
+        read_only   = false
+      }
 
       config {
-        image   = "svforte/anon-check"
+        image      = "svforte/anon-check"
         force_pull = true
-        ports   = ["http-port"]
-        volumes = [
-          #          "local/logs/:/opt/check/data/logs",
-          "local/data/:/opt/check/data/"
+        ports      = ["http-port"]
+        volumes    = [
+          "local/logs/:/opt/check/data/logs",
         ]
       }
 
-      #      vault {
-      #      	policies = ["ator-network-read"]
-      #      }
+      vault {
+        policies = ["ator-network-read"]
+      }
 
       resources {
         cpu    = 256
@@ -93,23 +92,23 @@ job "anon-check-stage" {
     task "anon-check-relay-stage-task" {
       driver = "docker"
 
-#      volume_mount {
-#        volume      = "anon-check-data"
-#        destination = "/var/lib/anon"
-#        read_only   = true
-#      }
+      volume_mount {
+        volume      = "anon-check-data"
+        destination = "/var/lib/anon"
+        read_only   = false
+      }
 
       config {
-        image   = "svforte/anon-stage"
+        image      = "svforte/anon-stage"
         force_pull = true
-        volumes = [
+        volumes    = [
           "local/anonrc:/etc/anon/anonrc"
         ]
       }
 
-      #      vault {
-      #      	policies = ["ator-network-read"]
-      #      }
+      vault {
+        policies = ["ator-network-read"]
+      }
 
       resources {
         cpu    = 256
@@ -120,6 +119,8 @@ job "anon-check-stage" {
         change_mode = "noop"
         data        = <<EOH
 DataDirectory /var/lib/anon/anon-data
+
+User anond
 
 Nickname ForteAnonCheckStage
 

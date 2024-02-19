@@ -12,7 +12,7 @@ services:
       - check-relay
     restart: always
     environment:
-      INTERVAL_MINUTES: 1
+      INTERVAL_MINUTES: 5
       COLLECTOR_HOST: "http://host.docker.internal:9000"
     ports:
       - "8000:8000"
