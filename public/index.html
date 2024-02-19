@@ -70,42 +70,42 @@
       {{ "Sorry. You are not using Anon." }}
     {{ end }}
   </h1>
-  <p>{{ GetText .Lang "Your IP address appears to be: " }} <strong>{{ .IP }}</strong></p>
+  <p>{{ "Your IP address appears to be: " }} <strong>{{ .IP }}</strong></p>
   {{ if .IsAnon }}
       {{ if .NotUpToDate }}
         <p class="security">
-          {{ GetText .Lang "There is a security update available for Tor Browser." }}<br />
-          {{ GetText .Lang "<a href=\"https://www.torproject.org/download/\">Click here to go to the download page</a>" | UnEscaped }}
+          {{ "There is a security update available for Tor Browser." }}<br />
+          {{ "<a href=\"https://www.torproject.org/download/\">Click here to go to the download page</a>" | UnEscaped }}
         </p>
       {{ else }}
         {{ if .NotTBB }}
           <p class="security">
-            {{ GetText .Lang "However, it does not appear to be Tor Browser." }}<br />
-            {{ GetText .Lang "<a href=\"https://www.torproject.org/download/\">Click here to go to the download page</a>" | UnEscaped }}
+            {{ "However, it does not appear to be Tor Browser." }}<br />
+            {{ "<a href=\"https://www.torproject.org/download/\">Click here to go to the download page</a>" | UnEscaped }}
           </p>
         {{ end }}
       {{ end }}
   {{ end }}
   <p class="mid">
     {{ if .IsAnon }}
-      {{ GetText .Lang "Please refer to the <a href=\"https://www.torproject.org/\">Tor website</a> for further information about using Tor safely. You are now free to browse the Internet anonymously." | UnEscaped }} {{ GetText .Lang "For more information about this exit relay, see:" }} <a href="https://metrics.torproject.org/rs.html#search/{{ .IP }}">{{ GetText .Lang "Relay Search" }}</a>.
+      {{ "Please refer to the <a href=\"https://www.torproject.org/\">Tor website</a> for further information about using Tor safely. You are now free to browse the Internet anonymously." | UnEscaped }} {{ "For more information about this exit relay, see:" }} <a href="https://metrics.torproject.org/rs.html#search/{{ .IP }}">{{ "Relay Search" }}</a>.
     {{ else }}
-      {{ GetText .Lang "If you are attempting to use a Tor client, please refer to the <a href=\"https://www.torproject.org/\">Tor website</a> and specifically the <a href=\"https://support.torproject.org/#faq\">frequently asked questions</a>." | UnEscaped }}
+      {{ "If you are attempting to use a Tor client, please refer to the <a href=\"https://www.torproject.org/\">Tor website</a> and specifically the <a href=\"https://support.torproject.org/#faq\">frequently asked questions</a>." | UnEscaped }}
     {{ end }}
   </p>
-  <a id="donate" href="https://donate.torproject.org/">{{ GetText .Lang "Donate to Support Tor" }}</a>
+  <a id="donate" href="https://donate.torproject.org/">{{ "Donate to Support Tor" }}</a>
   <ul id="links">
     <li>
-      <a href="https://forum.torproject.org/">{{ GetText .Lang "Tor Forum" }}</a>
+      <a href="https://forum.torproject.org/">{{ "Tor Forum" }}</a>
     </li>
     <li>
-      <a href="https://community.torproject.org/">{{ GetText .Lang "Volunteer" }}</a>
+      <a href="https://community.torproject.org/">{{ "Volunteer" }}</a>
     </li>
     <li>
-      <a href="https://community.torproject.org/relay/">{{ GetText .Lang "Run a Relay" }}</a>
+      <a href="https://community.torproject.org/relay/">{{ "Run a Relay" }}</a>
     </li>
     <li>
-      <a href="https://support.torproject.org/faq/staying-anonymous/">{{ GetText .Lang "Stay Anonymous" }}</a>
+      <a href="https://support.torproject.org/faq/staying-anonymous/">{{ "Stay Anonymous" }}</a>
     </li>
   </ul>
 {{ end }}
@@ -115,7 +115,7 @@
     // javascript enabled?
     var a = document.createElement("a");
     a.href = "https://support.torproject.org/#tbb-34";
-    var c = document.createTextNode("{{ GetText .Lang "JavaScript is enabled." }}");
+    var c = document.createTextNode("{{ "JavaScript is enabled." }}");
     a.appendChild(c);
     document.getElementById("js").appendChild(a);
     // change language
@@ -123,6 +123,6 @@
       document.getElementById("lang").submit();
     });
   </script>
-  <noscript>{{ GetText .Lang "JavaScript is disabled." }}</noscript>
+  <noscript>{{ "JavaScript is disabled." }}</noscript>
 </p>
 {{ end }}

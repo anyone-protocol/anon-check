@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/samuel/go-gettext/gettext"
 	"html/template"
 	"io"
 	"log"

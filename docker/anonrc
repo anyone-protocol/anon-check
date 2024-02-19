@@ -1,5 +1,7 @@
 DataDirectory /var/lib/anon/anon-data
 
+User anond
+
 Nickname ForteAnonCheckRelay
 
 FetchDirInfoEarly 1
