@@ -1,4 +1,4 @@
-module git.torproject.org/check.git
+module github.com/ATOR-Development/check
 
 go 1.11
 

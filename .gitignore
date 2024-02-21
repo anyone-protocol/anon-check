@@ -9,3 +9,6 @@
 *cpu.prof
 *cover.out
 *check.test
+.idea
+*.iml
+docker/check-data

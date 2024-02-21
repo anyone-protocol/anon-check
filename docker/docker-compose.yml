@@ -1,0 +1,20 @@
+version: '2.2'
+services:
+  check-relay:
+    image: svforte/anon-dev
+    restart: always
+    volumes:
+      - ./check-data/:/var/lib/anon
+      - ./anonrc:/etc/anon/anonrc
+  check-core:
+    image: anon-check
+    depends_on:
+      - check-relay
+    restart: always
+    environment:
+      INTERVAL_MINUTES: 5
+      COLLECTOR_HOST: "http://host.docker.internal:9000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./check-data/:/opt/check/data
