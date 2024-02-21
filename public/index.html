@@ -1,142 +1,34 @@
 {{ template "base.html" . }}
 {{ define "title" }}
-    {{ if .IsTor }}
-      {{ GetText .Lang "Congratulations. This browser is configured to use Tor." }}
+    {{ if .IsAnon }}
+      {{ "Congratulations. This browser is configured to use Anon." }}
     {{ else }}
-      {{ GetText .Lang "Sorry. You are not using Tor." }}
+      {{ "Sorry. You are not using Anon." }}
     {{ end }}
 {{ end }}
-{{ define "favicon" }}tor-{{ .OnOff }}.png{{ end }}
 {{ define "css" }}
   .on { color: green; }
   .off { color: red; }
-  .not { color: goldenrod; }
-  .mid { margin: 3em 0; }
-  .mid a {
-    text-decoration: underline;
-  }
-  .small { font-size: 0.8em; }
-  .security {
-    margin: 2em 0;
-    padding: 1em;
-    font-size: 1.4em;
-    color: goldenrod;
-    background-color: ghostwhite;
-    border-radius: 5px;
-  }
-  .security a {
-    color: goldenrod;
-    text-decoration: underline;
-  }
-  .onion {
-    width: 128px;
-    height: 128px;
-    border: 0;
-    text-decoration: none;
-  }
   #js {
     font-size: 0.8em;
   }
-  #donate {
-    background-color: dodgerblue;
-    color: white;
-    text-decoration: none;
-    font-size: 1.4em;
-    font-weight: bold;
-    padding: 0.6em 2.4em;
-    border-radius: 0.2em;
-    display: inline-block;
-  }
-  #links {
-    margin-top: 0.6em;
-  }
-  #links li:after {
-    content: "|";
-    padding: 0 0.2em;
-  }
-  #links li:last-child:after {
-    content: "";
-    padding: 0;
-  }
-{{ end }}
-{{ define "head" }}
-<form action="/" method="get" id="lang">
-  {{ if .Small }}<input type="hidden" name="small" value="1" />{{ end }}
-  {{ if And .IsTor .NotUpToDate }}<input type="hidden" name="uptodate" value="0" />{{ end }}
-  <label for="lang" class="small">{{ GetText .Lang "This page is also available in the following languages:" }}</label>
-  <select id="cl" name="lang">
-    {{ $out := . }}
-    {{ range $k, $i := .Locales }}
-      <option value="{{ $k }}" {{ if Equal $k $out.Lang }}selected="selected"{{ end }}>{{ $i | UnEscaped }}</option>
-    {{ end }}
-  </select>
-  <input type="submit" value="{{ GetText .Lang "Go" }}" />
-</form>
 {{ end }}
 {{ define "body" }}
-  {{ if Not .Small }}
-    <img src="/torcheck/img/tor-{{ .OnOff }}.png" class="onion" />
-  {{ end }}
   <h1 class="{{ .OnOff }}">
-    {{ if .IsTor }}
-      {{ GetText .Lang "Congratulations. This browser is configured to use Tor." }}
+    {{ if .IsAnon }}
+      {{ "Congratulations. This browser is configured to use Anon." }}
     {{ else }}
-      {{ GetText .Lang "Sorry. You are not using Tor." }}
+      {{ "Sorry. You are not using Anon." }}
     {{ end }}
   </h1>
-  <p>{{ GetText .Lang "Your IP address appears to be: " }} <strong>{{ .IP }}</strong></p>
-  {{ if .IsTor }}
-      {{ if .NotUpToDate }}
-        <p class="security">
-          {{ GetText .Lang "There is a security update available for Tor Browser." }}<br />
-          {{ GetText .Lang "<a href=\"https://www.torproject.org/download/\">Click here to go to the download page</a>" | UnEscaped }}
-        </p>
-      {{ else }}
-        {{ if .NotTBB }}
-          <p class="security">
-            {{ GetText .Lang "However, it does not appear to be Tor Browser." }}<br />
-            {{ GetText .Lang "<a href=\"https://www.torproject.org/download/\">Click here to go to the download page</a>" | UnEscaped }}
-          </p>
-        {{ end }}
-      {{ end }}
-  {{ end }}
-  <p class="mid">
-    {{ if .IsTor }}
-      {{ GetText .Lang "Please refer to the <a href=\"https://www.torproject.org/\">Tor website</a> for further information about using Tor safely. You are now free to browse the Internet anonymously." | UnEscaped }} {{ GetText .Lang "For more information about this exit relay, see:" }} <a href="https://metrics.torproject.org/rs.html#search/{{ .IP }}">{{ GetText .Lang "Relay Search" }}</a>.
-    {{ else }}
-      {{ GetText .Lang "If you are attempting to use a Tor client, please refer to the <a href=\"https://www.torproject.org/\">Tor website</a> and specifically the <a href=\"https://support.torproject.org/#faq\">frequently asked questions</a>." | UnEscaped }}
-    {{ end }}
-  </p>
-  <a id="donate" href="https://donate.torproject.org/">{{ GetText .Lang "Donate to Support Tor" }}</a>
-  <ul id="links">
-    <li>
-      <a href="https://forum.torproject.org/">{{ GetText .Lang "Tor Forum" }}</a>
-    </li>
-    <li>
-      <a href="https://community.torproject.org/">{{ GetText .Lang "Volunteer" }}</a>
-    </li>
-    <li>
-      <a href="https://community.torproject.org/relay/">{{ GetText .Lang "Run a Relay" }}</a>
-    </li>
-    <li>
-      <a href="https://support.torproject.org/faq/staying-anonymous/">{{ GetText .Lang "Stay Anonymous" }}</a>
-    </li>
-  </ul>
-{{ end }}
-{{ define "foot" }}
-<p id="js">
-  <script>
-    // javascript enabled?
-    var a = document.createElement("a");
-    a.href = "https://support.torproject.org/#tbb-34";
-    var c = document.createTextNode("{{ GetText .Lang "JavaScript is enabled." }}");
-    a.appendChild(c);
-    document.getElementById("js").appendChild(a);
-    // change language
-    document.getElementById("cl").addEventListener("change", function () {
-      document.getElementById("lang").submit();
-    });
-  </script>
-  <noscript>{{ GetText .Lang "JavaScript is disabled." }}</noscript>
-</p>
+  <h3>{{ "Your IP address appears to be: " }} <strong>{{ .IP }}</strong></h3>
+  <h2 id="js" >
+    <script>
+      // javascript enabled?
+      var js = document.getElementById("js")
+      js.style.color = "orange";
+      js.append("JavaScript is enabled.");
+    </script>
+    <noscript>{{ "JavaScript is disabled." }}</noscript>
+  </h2>
 {{ end }}

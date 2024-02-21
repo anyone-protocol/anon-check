@@ -1,10 +1,6 @@
 name: Build and Push Docker Image
 
 on:
-  # remove the pull_request when it is ready
-  pull_request:
-    branches:
-      - development
   push:
     branches:
       - main

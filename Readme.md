@@ -21,10 +21,9 @@ Alternatively,
 
     apt-get install python-dateutil python-stem  # stem 1.1 is in unstable
 
-For the server itself, you'll need `go` and `gettext`. Installing that might look like:
+For the server itself, you'll need `go`. Installing that might look like:
 
-    apt-get install git golang gettext
-    go get github.com/samuel/go-gettext/gettext
+    apt-get install git golang
 
 Then you can run `make` and wait for `git` and `rsync` to fetch all the data and launch the server.
 
@@ -34,7 +33,7 @@ Please run the tests before sending a pull request:
 
 ## Production
 
-The data that `make start` pulls in will quickly become stale. What you want to do is run a `tor` instance with the following configurations in your `torrc`:
+The data that `make start` pulls in will quickly become stale. What you want to do is run an `anon` instance with the following configurations in your `anonrc`:
 
     FetchDirInfoEarly 1
     FetchDirInfoExtraEarly 1
@@ -49,8 +48,7 @@ Then setup a cron job to run a script like `scripts/cpexits.sh` every hour. Sett
 
 Assuming debian, install the dependencies,
 
-    apt-get install git golang gettext python-dateutil python-stem
-    go get github.com/samuel/go-gettext/gettext
+    apt-get install git golang python-dateutil python-stem
 
 The cron job and init script assume a base directory of `/opt/check`.
 

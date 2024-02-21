@@ -122,10 +122,10 @@ func (e ExitInfo) toJSON() (b []byte) {
 }
 
 type Exits struct {
-	List        PolicyList
-	UpdateTime  time.Time
-	ReloadChan  chan os.Signal
-	IsTorLookup map[string]string
+	List         PolicyList
+	UpdateTime   time.Time
+	ReloadChan   chan os.Signal
+	IsAnonLookup map[string]string
 }
 
 func (e *Exits) Dump(w io.Writer, tminus int, ip string, port int) {
@@ -164,16 +164,16 @@ func (e *Exits) GetAllExits(ap AddressPort, tminus int, fn func(string, string, 
 
 var DefaultTarget = AddressPort{"38.229.72.22", 443}
 
-func (e *Exits) PreComputeTorList() {
+func (e *Exits) PreComputeAnonList() {
 	newmap := make(map[string]string)
 	e.GetAllExits(DefaultTarget, 16, func(ip string, fingerprint string, _ int) {
 		newmap[ip] = fingerprint
 	})
-	e.IsTorLookup = newmap
+	e.IsAnonLookup = newmap
 }
 
-func (e *Exits) IsTor(remoteAddr string) (fingerprint string, ok bool) {
-	fingerprint, ok = e.IsTorLookup[remoteAddr]
+func (e *Exits) IsAnon(remoteAddr string) (fingerprint string, ok bool) {
+	fingerprint, ok = e.IsAnonLookup[remoteAddr]
 	return
 }
 
@@ -249,7 +249,7 @@ func (e *Exits) Load(source io.Reader, update bool) error {
 
 	e.Update(exits, update)
 	e.UpdateTime = time.Now()
-	e.PreComputeTorList()
+	e.PreComputeAnonList()
 	return nil
 }
 

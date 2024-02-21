@@ -1,6 +1,5 @@
 {{ template "base.html" . }}
-{{ define "title" }}Bulk Tor Exit Exporter{{ end }}
-{{ define "favicon" }}favicon.ico{{ end }}
+{{ define "title" }}Bulk Anon Exit Exporter{{ end }}
 {{ define "head" }}{{ end }}
 {{ define "css" }}
   .form {
@@ -12,9 +11,8 @@
   }
 {{ end }}
 {{ define "body" }}
-  <img src="/torcheck/img/tor-on.png" class="onion" />
-  <h4>Welcome to the Tor Bulk Exit List exporting tool.</h4>
-  <p>If you are a service provider and you wish to build a list of possible Tor nodes that might contact one of your servers, enter that single server address below. Giving you the whole list means you can query the list privately, rather than telling us your users' IP addresses. This list allows you to have a nearly real time authoritative source for Tor exits that allow contacting your server on port 80. We don't log the IP address that queries for a given list. If you'd like, you're free to run your own copy of this program. It's Free Software and can be downloaded from the <a href="https://gitlab.torproject.org/tpo/network-health/metrics/tor-check">git repository</a>.</p>
+  <h4>Welcome to the Anon Bulk Exit List exporting tool.</h4>
+  <p>If you are a service provider, and you wish to build a list of possible Anon nodes that might contact one of your servers, enter that single server address below. Giving you the whole list means you can query the list privately, rather than telling us your users' IP addresses. This list allows you to have a nearly real time authoritative source for Anon exits that allow contacting your server on port 80. We don't log the IP address that queries for a given list.</p>
 
   <form action="" name="ip">
     <div class="form">
@@ -30,7 +28,8 @@
     </div>
   </form>
 
-  <p class="exli">Get the current list of <a href="/exit-addresses">exit addresses</a> outputted by TorDNSEL. Past data can be obtained from the <a href="https://collector.torproject.org/">CollecTor service</a>.</p>
+<!--  TorDNSEL is disabled now.-->
+<!--  <p class="exli">Get the current list of <a href="/exit-addresses">exit addresses</a> outputted by TorDNSEL. Past data can be obtained from the <a href="">Collector service</a>.</p>-->
 
 {{ end }}
 {{ define "foot" }}{{ end }}
