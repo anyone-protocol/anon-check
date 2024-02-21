@@ -69,8 +69,8 @@ job "anon-check-dev" {
         port = "http-port"
         tags = [
           "traefik.enable=true",
-          "traefik.http.routers.check-dev.entrypoints=https",
           "traefik.http.routers.check-dev.rule=Host(`check-dev.dmz.ator.dev`)",
+          "traefik.http.routers.check-dev.entrypoints=https",
           "traefik.http.routers.check-dev.tls=true",
           "traefik.http.routers.check-dev.tls.certresolver=atorresolver",
         ]

@@ -69,10 +69,10 @@ job "anon-check-stage" {
         port = "http-port"
         tags = [
           "traefik.enable=true",
-          "traefik.http.routers.check-dev.entrypoints=https",
-          "traefik.http.routers.check-dev.rule=Host(`check-stage.dmz.ator.dev`)",
-          "traefik.http.routers.check-dev.tls=true",
-          "traefik.http.routers.check-dev.tls.certresolver=atorresolver",
+          "traefik.http.routers.check-stage.rule=Host(`check-stage.dmz.ator.dev`)",
+          "traefik.http.routers.check-stage.entrypoints=https",
+          "traefik.http.routers.check-stage.tls=true",
+          "traefik.http.routers.check-stage.tls.certresolver=atorresolver",
         ]
         check {
           name     = "Anon check web server check"
