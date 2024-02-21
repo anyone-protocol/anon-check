@@ -59,24 +59,8 @@ exits: data/consensus data/cached-descriptors # data/exit-addresses
 	@python3 scripts/exitips.py
 	@echo Done
 
-locale/:
-	rm -rf locale
-	git clone -b torcheck \
-		https://gitlab.torproject.org/tpo/translation.git locale
-	pushd locale; \
-	for f in *; do \
-		if [ "$$f" != "templates" ]; then \
-			pushd "$$f"; \
-			mkdir LC_MESSAGES; \
-			msgfmt -o LC_MESSAGES/check.mo torcheck.po; \
-			popd; \
-		fi \
-	done
-
 data/langs: data/
 	curl -k https://www.transifex.com/api/2/languages/ > data/langs
-
-i18n: locale/ data/langs
 
 build:
 	go build

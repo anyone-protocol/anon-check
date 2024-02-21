@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/samuel/go-gettext/gettext"
 	"log"
 	"net/http"
 	"os"
@@ -40,28 +39,22 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// load i18n
-	domain, err := gettext.NewDomain("check", path.Join(*basePath, "locale"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	Locales := GetLocaleList(*basePath)
-
-	// Load Tor exits and listen for SIGUSR2 to reload
+	// Load Anon exits and listen for SIGUSR2 to reload
 	exits := new(Exits)
 	exits.Run(path.Join(*basePath, "data/exit-policies"))
 
 	// files
 	files := http.FileServer(http.Dir(path.Join(*basePath, "public")))
 	Phttp := http.NewServeMux()
-	Phttp.Handle("/torcheck/", http.StripPrefix("/torcheck/", files))
+	// TODO - Unused routes are disabled. Enable them if needed.
+	//Phttp.Handle("/torcheck/", http.StripPrefix("/torcheck/", files))
 	Phttp.Handle("/", files)
 
 	// routes
-	http.HandleFunc("/", RootHandler(CompileTemplate(*basePath, domain, "index.html"), exits, domain, Phttp, Locales))
-	bulk := BulkHandler(CompileTemplate(*basePath, domain, "bulk.html"), exits, domain)
-	http.HandleFunc("/torbulkexitlist", bulk)
-	http.HandleFunc("/cgi-bin/TorBulkExitList.py", bulk)
+	http.HandleFunc("/", RootHandler(CompileTemplate(*basePath, "index.html"), exits, Phttp))
+	bulk := BulkHandler(CompileTemplate(*basePath, "bulk.html"), exits)
+	http.HandleFunc("/anonbulkexitlist", bulk)
+	//http.HandleFunc("/cgi-bin/TorBulkExitList.py", bulk)
 	http.HandleFunc("/api/bulk", bulk)
 	http.HandleFunc("/api/ip", APIHandler(exits))
 

@@ -3,7 +3,6 @@
 /check.pid
 /check.log
 /check
-/locale
 /vagrant
 *mem.prof
 *cpu.prof

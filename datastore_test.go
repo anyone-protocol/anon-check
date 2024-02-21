@@ -49,9 +49,9 @@ func checkDump(t *testing.T, dumpStr string, expected ...string) {
 	}
 }
 
-func (e *Exits) assertIsTor(t *testing.T, ip string, expected bool) {
-	if _, ok := e.IsTor(ip); ok != expected {
-		t.Errorf("Failed IsTor Assert for %s, got %v but wanted %v", ip, ok, expected)
+func (e *Exits) assertIsAnon(t *testing.T, ip string, expected bool) {
+	if _, ok := e.IsAnon(ip); ok != expected {
+		t.Errorf("Failed IsAnon Assert for %s, got %v but wanted %v", ip, ok, expected)
 	}
 }
 
@@ -69,11 +69,11 @@ func TestExitListLoading(t *testing.T) {
 				 {"Rules": [{"IsAccept": true, "MinPort": 20, "MaxPort": 23, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 43, "MaxPort": 43, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 53, "MaxPort": 53, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 79, "MaxPort": 81, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 88, "MaxPort": 88, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 110, "MaxPort": 110, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 143, "MaxPort": 143, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 194, "MaxPort": 194, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 220, "MaxPort": 220, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 443, "MaxPort": 443, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 464, "MaxPort": 465, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 543, "MaxPort": 544, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 563, "MaxPort": 563, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 587, "MaxPort": 587, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 706, "MaxPort": 706, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 749, "MaxPort": 749, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 873, "MaxPort": 873, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 902, "MaxPort": 904, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 981, "MaxPort": 981, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 989, "MaxPort": 995, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 1194, "MaxPort": 1194, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 1220, "MaxPort": 1220, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 1293, "MaxPort": 1293, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 1500, "MaxPort": 1500, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 1723, "MaxPort": 1723, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 1863, "MaxPort": 1863, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 2082, "MaxPort": 2083, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 2086, "MaxPort": 2087, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 2095, "MaxPort": 2096, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 3128, "MaxPort": 3128, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 3389, "MaxPort": 3389, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 3690, "MaxPort": 3690, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 4321, "MaxPort": 4321, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 4643, "MaxPort": 4643, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 5050, "MaxPort": 5050, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 5190, "MaxPort": 5190, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 5222, "MaxPort": 5223, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 5228, "MaxPort": 5228, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 5900, "MaxPort": 5900, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 6666, "MaxPort": 6667, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 6679, "MaxPort": 6679, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 6697, "MaxPort": 6697, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 8000, "MaxPort": 8000, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 8008, "MaxPort": 8008, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 8080, "MaxPort": 8080, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 8087, "MaxPort": 8088, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 8443, "MaxPort": 8443, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 8888, "MaxPort": 8888, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 9418, "MaxPort": 9418, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 9999, "MaxPort": 10000, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 19294, "MaxPort": 19294, "Address": null, "IsAddressWildcard": true}, {"IsAccept": true, "MinPort": 19638, "MaxPort": 19638, "Address": null, "IsAddressWildcard": true}], "IsAllowedDefault": false, "Address": ["91.121.43.80"], "Fingerprint": "2"}`
 	exits := setupExitList(t, testData)
 
-	// Valid tor exit
-	exits.assertIsTor(t, "91.121.43.80", true)
+	// Valid anon exit
+	exits.assertIsAnon(t, "91.121.43.80", true)
 
-	// Invalid tor exit
-	exits.assertIsTor(t, "91.121.43.4", false)
+	// Invalid anon exit
+	exits.assertIsAnon(t, "91.121.43.4", false)
 
 	// check both exits are listed for 995
 	// Accept either ordering of output
@@ -181,13 +181,13 @@ func TestPastHours(t *testing.T) {
 	expectDump(t, exits, "123.123.123.123", 80, "111.111.111.111")
 }
 
-func BenchmarkIsTor(b *testing.B) {
+func BenchmarkIsAnon(b *testing.B) {
 	e := new(Exits)
 	e.LoadFromFile("data/exit-policies", false)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		e.IsTor("91.121.43.80")
-		e.IsTor("91.121.43.4")
+		e.IsAnon("91.121.43.80")
+		e.IsAnon("91.121.43.4")
 	}
 }
 

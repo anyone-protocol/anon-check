@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/samuel/go-gettext/gettext"
 	"html/template"
 	"io"
 	"log"
@@ -17,7 +16,7 @@ import (
 
 // page model
 type Page struct {
-	IsTor       bool
+	IsAnon      bool
 	NotUpToDate bool
 	Small       bool
 	NotTBB      bool
@@ -25,10 +24,9 @@ type Page struct {
 	OnOff       string
 	Lang        string
 	IP          string
-	Locales     map[string]string
 }
 
-func RootHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain, Phttp *http.ServeMux, Locales map[string]string) http.HandlerFunc {
+func RootHandler(Layout *template.Template, Exits *Exits, Phttp *http.ServeMux) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 
@@ -40,20 +38,14 @@ func RootHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain
 
 		var (
 			err         error
-			isTor       bool
+			isAnon      bool
 			host        string
 			onOff       string
 			fingerprint string
 		)
 
 		if host, err = GetHost(r); err == nil {
-			fingerprint, isTor = Exits.IsTor(host)
-		}
-
-		// short circuit for torbutton
-		if IsParamSet(r, "TorButton") {
-			WriteHTMLBuf(w, r, Layout, domain, "torbutton.html", Page{IsTor: isTor})
-			return
+			fingerprint, isAnon = Exits.IsAnon(host)
 		}
 
 		// try to determine if it's TBB
@@ -66,7 +58,7 @@ func RootHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain
 
 		// string used for classes and such
 		// in the template
-		if isTor {
+		if isAnon {
 			if notTBB || notUpToDate {
 				onOff = "not"
 			} else {
@@ -78,7 +70,7 @@ func RootHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain
 
 		// instance of your page model
 		p := Page{
-			isTor,
+			isAnon,
 			notUpToDate,
 			IsParamSet(r, "small"),
 			notTBB,
@@ -86,37 +78,36 @@ func RootHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain
 			onOff,
 			Lang(r),
 			host,
-			Locales,
 		}
 
 		// render the template
-		WriteHTMLBuf(w, r, Layout, domain, "index.html", p)
+		WriteHTMLBuf(w, r, Layout, "index.html", p)
 	}
 
 }
 
 type IPResp struct {
-	IsTor bool
-	IP    string
+	IsAnon bool
+	IP     string
 }
 
 func APIHandler(Exits *Exits) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		var (
-			err   error
-			isTor bool
-			host  string
+			err    error
+			isAnon bool
+			host   string
 		)
 		if host, err = GetHost(r); err == nil {
-			_, isTor = Exits.IsTor(host)
+			_, isAnon = Exits.IsAnon(host)
 		}
-		ip, _ := json.Marshal(IPResp{isTor, host})
+		ip, _ := json.Marshal(IPResp{isAnon, host})
 		w.Write(ip)
 	}
 }
 
-func BulkHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain) http.HandlerFunc {
+func BulkHandler(Layout *template.Template, Exits *Exits) http.HandlerFunc {
 
 	ApiPath := regexp.MustCompile("^/api/")
 
@@ -125,12 +116,12 @@ func BulkHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain
 
 		ip := q.Get("ip")
 		if net.ParseIP(ip) == nil {
-			WriteHTMLBuf(w, r, Layout, domain, "bulk.html", Page{Lang: "en"})
+			WriteHTMLBuf(w, r, Layout, "bulk.html", Page{Lang: "en"})
 			return
 		}
 
-		port, port_str := GetQS(q, "port", 80)
-		n, n_str := GetQS(q, "n", 16)
+		port, _ := GetQS(q, "port", 80)
+		n, _ := GetQS(q, "n", 16)
 
 		w.Header().Set("Last-Modified", Exits.UpdateTime.UTC().Format(http.TimeFormat))
 
@@ -138,8 +129,8 @@ func BulkHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain
 			w.Header().Set("Content-Type", "application/json")
 			Exits.DumpJSON(w, n, ip, port)
 		} else {
-			str := fmt.Sprintf("# This is a list of all Tor exit nodes from the past %d hours that can contact %s on port %d #\n", n, ip, port)
-			str += fmt.Sprintf("# You can update this list by visiting https://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=%s%s%s #\n", ip, port_str, n_str)
+			str := fmt.Sprintf("# This is a list of all Anon exit nodes from the past %d hours that can contact %s on port %d #\n", n, ip, port)
+			//str += fmt.Sprintf("# You can update this list by visiting https://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=%s%s%s #\n", ip, port_str, n_str)
 			str += fmt.Sprintf("# This file was generated on %v #\n", Exits.UpdateTime.UTC().Format(time.UnixDate))
 			fmt.Fprintf(w, str)
 			Exits.Dump(w, n, ip, port)
@@ -149,13 +140,13 @@ func BulkHandler(Layout *template.Template, Exits *Exits, domain *gettext.Domain
 
 }
 
-func WriteHTMLBuf(w http.ResponseWriter, r *http.Request, Layout *template.Template, domain *gettext.Domain, tmp string, p Page) {
+func WriteHTMLBuf(w http.ResponseWriter, r *http.Request, Layout *template.Template, tmp string, p Page) {
 	buf := new(bytes.Buffer)
 
 	// render template
 	if err := Layout.ExecuteTemplate(buf, tmp, p); err != nil {
 		log.Printf("Layout.ExecuteTemplate: %v", err)
-		http.Error(w, domain.GetText(p.Lang, "Sorry, your query failed or an unexpected response was received."), http.StatusInternalServerError)
+		http.Error(w, "Sorry, your query failed or an unexpected response was received.", http.StatusInternalServerError)
 		return
 	}
 
