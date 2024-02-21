@@ -1,7 +1,7 @@
 name: Build and Push Docker Image
 
 on:
-  pull_request: # replace with push
+  push:
     branches:
       - development
   workflow_dispatch:
