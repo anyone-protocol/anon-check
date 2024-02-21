@@ -67,13 +67,13 @@ job "anon-check-stage" {
       service {
         name = "anon-check-stage"
         port = "http-port"
-        #        tags = [
-        #          "traefik.enable=true",
-        #          "traefik.http.routers.deb-repo.entrypoints=https",
-        #          "traefik.http.routers.deb-repo.rule=Host(`stage.anon-check.dmz.ator.dev`)",
-        #          "traefik.http.routers.deb-repo.tls=true",
-        #          "traefik.http.routers.deb-repo.tls.certresolver=atorresolver",
-        #        ]
+        tags = [
+          "traefik.enable=true",
+          "traefik.http.routers.check-dev.entrypoints=https",
+          "traefik.http.routers.check-dev.rule=Host(`check-stage.dmz.ator.dev`)",
+          "traefik.http.routers.check-dev.tls=true",
+          "traefik.http.routers.check-dev.tls.certresolver=atorresolver",
+        ]
         check {
           name     = "Anon check web server check"
           type     = "http"
