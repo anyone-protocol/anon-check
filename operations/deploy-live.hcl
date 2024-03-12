@@ -15,7 +15,7 @@ job "anon-check-live" {
     network {
       mode = "bridge"
       port "http-port" {
-        static       = 9188
+        static       = 9288
         to           = 8000
         host_network = "wireguard"
       }
@@ -34,7 +34,7 @@ job "anon-check-live" {
 	{{- range nomadService "collector-live" }}
   	    COLLECTOR_HOST="http://{{ .Address }}:{{ .Port }}"
 	{{ end -}}
-            INTERVAL_MINUTES="5"
+            INTERVAL_MINUTES="60"
             EOH
         destination = "secrets/file.env"
         env         = true
