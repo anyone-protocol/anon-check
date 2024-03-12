@@ -1,15 +1,15 @@
-job "anon-check-stage" {
+job "anon-check-live" {
   datacenters = ["ator-fin"]
   type        = "service"
   namespace   = "ator-network"
 
-  group "anon-check-stage-group" {
+  group "anon-check-live-group" {
     count = 1
 
     volume "anon-check-data" {
       type      = "host"
       read_only = false
-      source    = "anon-check-stage"
+      source    = "anon-check-live"
     }
 
     network {
@@ -26,12 +26,12 @@ job "anon-check-stage" {
       sticky  = true
     }
 
-    task "anon-check-service-stage-task" {
+    task "anon-check-service-live-task" {
       driver = "docker"
 
       template {
         data        = <<EOH
-	{{- range nomadService "collector-stage" }}
+	{{- range nomadService "collector-live" }}
   	    COLLECTOR_HOST="http://{{ .Address }}:{{ .Port }}"
 	{{ end -}}
             INTERVAL_MINUTES="5"
@@ -47,7 +47,7 @@ job "anon-check-stage" {
       }
 
       config {
-        image      = "svforte/anon-check:latest-stage"
+        image      = "svforte/anon-check"
         force_pull = true
         ports      = ["http-port"]
         volumes    = [
@@ -65,14 +65,14 @@ job "anon-check-stage" {
       }
 
       service {
-        name = "anon-check-stage"
+        name = "anon-check-live"
         port = "http-port"
         tags = [
           "traefik.enable=true",
-          "traefik.http.routers.check-stage.rule=Host(`check-stage.dmz.ator.dev`)",
-          "traefik.http.routers.check-stage.entrypoints=https",
-          "traefik.http.routers.check-stage.tls=true",
-          "traefik.http.routers.check-stage.tls.certresolver=atorresolver",
+          "traefik.http.routers.check-live.rule=Host(`check-live.dmz.ator.dev`)",
+          "traefik.http.routers.check-live.entrypoints=https",
+          "traefik.http.routers.check-live.tls=true",
+          "traefik.http.routers.check-live.tls.certresolver=atorresolver",
         ]
         check {
           name     = "Anon check web server check"
@@ -89,7 +89,7 @@ job "anon-check-stage" {
       }
     }
 
-    task "anon-check-relay-stage-task" {
+    task "anon-check-relay-live-task" {
       driver = "docker"
 
       volume_mount {
@@ -99,7 +99,7 @@ job "anon-check-stage" {
       }
 
       config {
-        image      = "svforte/anon-stage:latest-stage"
+        image      = "svforte/anon-live"
         force_pull = true
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
@@ -122,7 +122,7 @@ DataDirectory /var/lib/anon/anon-data
 
 User anond
 
-Nickname ForteAnonCheckStage
+Nickname ForteAnonCheckLive
 
 FetchDirInfoEarly 1
 FetchDirInfoExtraEarly 1
