@@ -47,7 +47,7 @@ job "anon-check-stage" {
       }
 
       config {
-        image      = "svforte/anon-check:latest-stage"
+        image      = "svforte/anon-check"
         force_pull = true
         ports      = ["http-port"]
         volumes    = [
@@ -99,7 +99,7 @@ job "anon-check-stage" {
       }
 
       config {
-        image      = "svforte/anon-stage:latest-stage"
+        image      = "svforte/anon-stage"
         force_pull = true
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"

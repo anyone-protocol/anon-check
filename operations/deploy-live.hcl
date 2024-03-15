@@ -99,7 +99,7 @@ job "anon-check-live" {
       }
 
       config {
-        image      = "svforte/anon-live"
+        image      = "svforte/anon:v0.4.9.0"
         force_pull = true
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
