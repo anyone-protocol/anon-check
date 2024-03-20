@@ -19,6 +19,9 @@ job "anon-check-dev" {
         to           = 8000
         host_network = "wireguard"
       }
+      port "orport" {
+        static = 9291
+      }
     }
 
     ephemeral_disk {
@@ -129,6 +132,8 @@ FetchDirInfoExtraEarly 1
 FetchUselessDescriptors 1
 UseMicrodescriptors 0
 DownloadExtraInfo 1
+
+ORPort {{ env `NOMAD_PORT_orport` }}
         EOH
         destination = "local/anonrc"
       }
