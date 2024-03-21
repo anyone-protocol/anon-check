@@ -17,9 +17,9 @@ jobs:
           docker-password: ${{ secrets.DOCKER_HUB_PASSWORD }}
       - name: Tag latest
         run: |
-          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/sbws:latest-stage
-          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/sbws:latest-stage ${{ secrets.DOCKER_HUB_USERNAME }}/sbws:latest
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/sbws:latest
+          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/anon-check:latest-stage
+          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/anon-check:latest-stage ${{ secrets.DOCKER_HUB_USERNAME }}/anon-check:latest
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/anon-check:latest
       - name: Deploy
         uses: ./.github/actions/deploy
         with:
