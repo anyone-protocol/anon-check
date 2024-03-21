@@ -50,7 +50,7 @@ job "anon-check-live" {
       }
 
       config {
-        image      = "svforte/anon-check"
+        image      = "svforte/anon-check:latest"
         force_pull = true
         ports      = ["http-port"]
         volumes    = [
