@@ -20,7 +20,7 @@ job "anon-check-stage" {
         host_network = "wireguard"
       }
       port "orport" {
-        static = 9291
+        static = 9191
       }
     }
 
