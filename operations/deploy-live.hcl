@@ -1,21 +1,21 @@
-job "anon-check-dev" {
+job "anon-check-live" {
   datacenters = ["ator-fin"]
   type        = "service"
   namespace   = "ator-network"
 
-  group "anon-check-dev-group" {
+  group "anon-check-live-group" {
     count = 1
 
     volume "anon-check-data" {
       type      = "host"
       read_only = false
-      source    = "anon-check-dev"
+      source    = "anon-check-live"
     }
 
     network {
       mode = "bridge"
       port "http-port" {
-        static       = 9088
+        static       = 9288
         to           = 8000
         host_network = "wireguard"
       }
@@ -29,15 +29,15 @@ job "anon-check-dev" {
       sticky  = true
     }
 
-    task "anon-check-service-dev-task" {
+    task "anon-check-service-live-task" {
       driver = "docker"
 
       template {
         data        = <<EOH
-	{{- range nomadService "collector-dev" }}
+	{{- range nomadService "collector-live" }}
   	    COLLECTOR_HOST="http://{{ .Address }}:{{ .Port }}"
 	{{ end -}}
-            INTERVAL_MINUTES="5"
+            INTERVAL_MINUTES="60"
             EOH
         destination = "secrets/file.env"
         env         = true
@@ -50,11 +50,11 @@ job "anon-check-dev" {
       }
 
       config {
-        image      = "svforte/anon-check:latest-dev"
+        image      = "svforte/anon-check:latest"
         force_pull = true
         ports      = ["http-port"]
         volumes    = [
-          "local/logs/:/opt/check/data/logs"
+          "local/logs/:/opt/check/data/logs",
         ]
       }
 
@@ -68,14 +68,14 @@ job "anon-check-dev" {
       }
 
       service {
-        name = "anon-check-dev"
+        name = "anon-check-live"
         port = "http-port"
         tags = [
           "traefik.enable=true",
-          "traefik.http.routers.check-dev.rule=Host(`check-dev.dmz.ator.dev`)",
-          "traefik.http.routers.check-dev.entrypoints=https",
-          "traefik.http.routers.check-dev.tls=true",
-          "traefik.http.routers.check-dev.tls.certresolver=atorresolver",
+          "traefik.http.routers.check-live.rule=Host(`check-live.dmz.ator.dev`)",
+          "traefik.http.routers.check-live.entrypoints=https",
+          "traefik.http.routers.check-live.tls=true",
+          "traefik.http.routers.check-live.tls.certresolver=atorresolver",
         ]
         check {
           name     = "Anon check web server check"
@@ -92,7 +92,7 @@ job "anon-check-dev" {
       }
     }
 
-    task "anon-check-relay-dev-task" {
+    task "anon-check-relay-live-task" {
       driver = "docker"
 
       volume_mount {
@@ -102,7 +102,7 @@ job "anon-check-dev" {
       }
 
       config {
-        image      = "svforte/anon-dev"
+        image      = "svforte/anon:v0.4.9.0"
         force_pull = true
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
@@ -125,7 +125,7 @@ DataDirectory /var/lib/anon/anon-data
 
 User anond
 
-Nickname ForteAnonCheckDev
+Nickname ForteAnonCheckLive
 
 FetchDirInfoEarly 1
 FetchDirInfoExtraEarly 1
