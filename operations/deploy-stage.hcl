@@ -19,6 +19,9 @@ job "anon-check-stage" {
         to           = 8000
         host_network = "wireguard"
       }
+      port "orport" {
+        static = 9191
+      }
     }
 
     ephemeral_disk {
@@ -34,7 +37,7 @@ job "anon-check-stage" {
 	{{- range nomadService "collector-stage" }}
   	    COLLECTOR_HOST="http://{{ .Address }}:{{ .Port }}"
 	{{ end -}}
-            INTERVAL_MINUTES="5"
+            INTERVAL_MINUTES="60"
             EOH
         destination = "secrets/file.env"
         env         = true
@@ -47,7 +50,7 @@ job "anon-check-stage" {
       }
 
       config {
-        image      = "svforte/anon-check"
+        image      = "svforte/anon-check:latest-stage"
         force_pull = true
         ports      = ["http-port"]
         volumes    = [
@@ -129,6 +132,8 @@ FetchDirInfoExtraEarly 1
 FetchUselessDescriptors 1
 UseMicrodescriptors 0
 DownloadExtraInfo 1
+
+ORPort {{ env `NOMAD_PORT_orport` }}
         EOH
         destination = "local/anonrc"
       }
