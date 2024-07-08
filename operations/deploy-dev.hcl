@@ -76,6 +76,7 @@ job "anon-check-dev" {
           "traefik.http.routers.check-dev.entrypoints=https",
           "traefik.http.routers.check-dev.tls=true",
           "traefik.http.routers.check-dev.tls.certresolver=atorresolver",
+          "logging"
         ]
         check {
           name     = "Anon check web server check"
@@ -116,6 +117,11 @@ job "anon-check-dev" {
       resources {
         cpu    = 256
         memory = 256
+      }
+
+      service {
+        name = "anon-check-relay-dev"
+        tags = [ "logging" ]
       }
 
       template {
