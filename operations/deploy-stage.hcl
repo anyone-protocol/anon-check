@@ -76,6 +76,7 @@ job "anon-check-stage" {
           "traefik.http.routers.check-stage.entrypoints=https",
           "traefik.http.routers.check-stage.tls=true",
           "traefik.http.routers.check-stage.tls.certresolver=atorresolver",
+          "logging"
         ]
         check {
           name     = "Anon check web server check"
@@ -116,6 +117,11 @@ job "anon-check-stage" {
       resources {
         cpu    = 256
         memory = 256
+      }
+
+      service {
+        name = "anon-check-relay-stage"
+        tags = [ "logging" ]
       }
 
       template {

@@ -76,6 +76,7 @@ job "anon-check-live" {
           "traefik.http.routers.check-live.entrypoints=https",
           "traefik.http.routers.check-live.tls=true",
           "traefik.http.routers.check-live.tls.certresolver=atorresolver",
+          "logging"
         ]
         check {
           name     = "Anon check web server check"
@@ -116,6 +117,11 @@ job "anon-check-live" {
       resources {
         cpu    = 256
         memory = 256
+      }
+
+      service {
+        name = "anon-check-relay-live"
+        tags = [ "logging" ]
       }
 
       template {
