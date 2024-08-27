@@ -76,6 +76,11 @@ job "anon-check-dev" {
           "traefik.http.routers.check-dev.entrypoints=https",
           "traefik.http.routers.check-dev.tls=true",
           "traefik.http.routers.check-dev.tls.certresolver=atorresolver",
+
+          "traefik.http.routers.any1-check-dev.rule=Host(`check-dev.en.anyone.tech`)",
+          "traefik.http.routers.any1-check-dev.entrypoints=https",
+          "traefik.http.routers.any1-check-dev.tls=true",
+          "traefik.http.routers.any1-check-dev.tls.certresolver=anyoneresolver",
           "logging"
         ]
         check {
