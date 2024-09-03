@@ -76,6 +76,11 @@ job "anon-check-stage" {
           "traefik.http.routers.check-stage.entrypoints=https",
           "traefik.http.routers.check-stage.tls=true",
           "traefik.http.routers.check-stage.tls.certresolver=atorresolver",
+
+          "traefik.http.routers.any1-check-stage.rule=Host(`check-stage.en.anyone.tech`)",
+          "traefik.http.routers.any1-check-stage.entrypoints=https",
+          "traefik.http.routers.any1-check-stage.tls=true",
+          "traefik.http.routers.any1-check-stage.tls.certresolver=anyoneresolver",
           "logging"
         ]
         check {

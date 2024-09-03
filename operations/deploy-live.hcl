@@ -76,6 +76,11 @@ job "anon-check-live" {
           "traefik.http.routers.check-live.entrypoints=https",
           "traefik.http.routers.check-live.tls=true",
           "traefik.http.routers.check-live.tls.certresolver=atorresolver",
+
+          "traefik.http.routers.any1-check-live.rule=Host(`check.en.anyone.tech`)",
+          "traefik.http.routers.any1-check-live.entrypoints=https",
+          "traefik.http.routers.any1-check-live.tls=true",
+          "traefik.http.routers.any1-check-live.tls.certresolver=anyoneresolver",
           "logging"
         ]
         check {
