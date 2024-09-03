@@ -50,7 +50,7 @@ job "anon-check-stage" {
       }
 
       config {
-        image      = "svforte/anon-check:latest-stage"
+        image      = "ghcr.io/ator-development/anon-check:DEPLOY_TAG"
         force_pull = true
         ports      = ["http-port"]
         volumes    = [
@@ -108,7 +108,7 @@ job "anon-check-stage" {
       }
 
       config {
-        image      = "svforte/anon-stage"
+        image      = "ghcr.io/ator-development/ator-protocol-stage:latest"
         force_pull = true
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
@@ -135,6 +135,8 @@ job "anon-check-stage" {
 DataDirectory /var/lib/anon/anon-data
 
 User anond
+
+AgreeToTerms 1
 
 Nickname ForteAnonCheckStage
 
