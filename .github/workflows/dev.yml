@@ -24,6 +24,6 @@ jobs:
         with:
           environment: dev
           nomad-cacert: operations/admin-ui-ca.crt
-          nomad-token: ${{ secrets.NOMAD_TOKEN_COLLECTOR_DEPLOY }}
+          nomad-token: ${{ secrets.NOMAD_TOKEN_CHECK_DEPLOY }}
           nomad-addr: ${{ secrets.NOMAD_DEPLOY_ADDR }}
           docker-tag: ${{ github.sha }}
