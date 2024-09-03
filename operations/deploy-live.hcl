@@ -50,7 +50,7 @@ job "anon-check-live" {
       }
 
       config {
-        image      = "svforte/anon-check:latest"
+        image      = "ghcr.io/ator-development/anon-check:DEPLOY_TAG"
         force_pull = true
         ports      = ["http-port"]
         volumes    = [
