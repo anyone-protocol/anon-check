@@ -23,4 +23,4 @@ runs:
         context: .
         file: ./docker/Dockerfile
         push: true
-        tags: ghcr.io/ator-development/anon-check:${{ inputs.docker-tag }}
+        tags: ghcr.io/anyone-protocol/anon-check:${{ inputs.docker-tag }}
