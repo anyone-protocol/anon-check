@@ -1,3 +1,3 @@
-module github.com/ATOR-Development/check
+module github.com/anyone-protocol/check
 
 go 1.11
