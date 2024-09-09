@@ -50,7 +50,7 @@ job "anon-check-live" {
       }
 
       config {
-        image      = "ghcr.io/ator-development/anon-check:DEPLOY_TAG"
+        image      = "ghcr.io/anyone-protocol/anon-check:DEPLOY_TAG"
         ports      = ["http-port"]
         volumes    = [
           "local/logs/:/opt/check/data/logs",
