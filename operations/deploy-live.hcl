@@ -51,7 +51,6 @@ job "anon-check-live" {
 
       config {
         image      = "ghcr.io/ator-development/anon-check:DEPLOY_TAG"
-        force_pull = true
         ports      = ["http-port"]
         volumes    = [
           "local/logs/:/opt/check/data/logs",
@@ -109,7 +108,6 @@ job "anon-check-live" {
 
       config {
         image      = "svforte/anon:v0.4.9.0"
-        force_pull = true
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
         ]
@@ -121,7 +119,7 @@ job "anon-check-live" {
 
       resources {
         cpu    = 256
-        memory = 256
+        memory = 512
       }
 
       service {
