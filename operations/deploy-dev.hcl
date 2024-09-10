@@ -50,8 +50,7 @@ job "anon-check-dev" {
       }
 
       config {
-        image      = "ghcr.io/ator-development/anon-check:DEPLOY_TAG"
-        force_pull = true
+        image      = "ghcr.io/anyone-protocol/anon-check:DEPLOY_TAG"
         ports      = ["http-port"]
         volumes    = [
           "local/logs/:/opt/check/data/logs"
@@ -108,8 +107,7 @@ job "anon-check-dev" {
       }
 
       config {
-        image      = "ghcr.io/ator-development/ator-protocol-dev:latest"
-        force_pull = true
+        image      = "ghcr.io/anyone-protocol/ator-protocol-dev:latest"
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
         ]
