@@ -3,7 +3,7 @@
     {{ if .IsAnon }}
       {{ "Congratulations. You can be Anyone." }}
     {{ else }}
-      {{ "Sorry. You are not connected to Anyone network." }}
+      {{ "Sorry. You are not connected to Anyone." }}
     {{ end }}
 {{ end }}
 {{ define "css" }}
@@ -18,7 +18,7 @@
     {{ if .IsAnon }}
       {{ "Congratulations. You can be Anyone." }}
     {{ else }}
-      {{ "Sorry. You are not connected to Anyone network." }}
+      {{ "Sorry. You are not connected to Anyone." }}
     {{ end }}
   </h1>
   <h3>{{ "Your IP address appears to be: " }} <strong>{{ .IP }}</strong></h3>
