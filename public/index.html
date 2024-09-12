@@ -1,9 +1,9 @@
 {{ template "base.html" . }}
 {{ define "title" }}
     {{ if .IsAnon }}
-      {{ "Congratulations. This browser is configured to use Anon." }}
+      {{ "Congratulations. You can be Anyone." }}
     {{ else }}
-      {{ "Sorry. You are not using Anon." }}
+      {{ "Sorry. You are not connected to Anyone." }}
     {{ end }}
 {{ end }}
 {{ define "css" }}
@@ -16,9 +16,9 @@
 {{ define "body" }}
   <h1 class="{{ .OnOff }}">
     {{ if .IsAnon }}
-      {{ "Congratulations. This browser is configured to use Anon." }}
+      {{ "Congratulations. You can be Anyone." }}
     {{ else }}
-      {{ "Sorry. You are not using Anon." }}
+      {{ "Sorry. You are not connected to Anyone." }}
     {{ end }}
   </h1>
   <h3>{{ "Your IP address appears to be: " }} <strong>{{ .IP }}</strong></h3>
