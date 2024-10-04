@@ -107,7 +107,7 @@ job "anon-check-live" {
       }
 
       config {
-        image      = "svforte/anon:v0.4.9.0"
+        image      = "ghcr.io/anyone-protocol/ator-protocol:v0.4.9.7"
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
         ]
@@ -133,6 +133,8 @@ job "anon-check-live" {
 DataDirectory /var/lib/anon/anon-data
 
 User anond
+
+AgreeToTerms 1
 
 Nickname ForteAnonCheckLive
 
