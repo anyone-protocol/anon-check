@@ -136,7 +136,7 @@ User anond
 
 AgreeToTerms 1
 
-Nickname ForteAnonCheckLive
+Nickname AnonCheckRelayLive
 
 FetchDirInfoEarly 1
 FetchDirInfoExtraEarly 1

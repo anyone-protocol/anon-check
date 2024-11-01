@@ -107,7 +107,8 @@ job "anon-check-stage" {
       }
 
       config {
-        image      = "ghcr.io/anyone-protocol/ator-protocol-stage:latest"
+        # todo - use latest commit tag - https://github.com/anyone-protocol/jira-confluence/issues/224
+        image      = "ghcr.io/anyone-protocol/ator-protocol-stage:a72d294467112abb78ad6982259067af4574e88d"
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
         ]
@@ -136,7 +137,7 @@ User anond
 
 AgreeToTerms 1
 
-Nickname ForteAnonCheckStage
+Nickname AnonCheckRelayStage
 
 FetchDirInfoEarly 1
 FetchDirInfoExtraEarly 1
