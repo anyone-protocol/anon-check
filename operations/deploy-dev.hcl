@@ -107,7 +107,8 @@ job "anon-check-dev" {
       }
 
       config {
-        image      = "ghcr.io/anyone-protocol/ator-protocol-dev:latest"
+        # todo - Automate tag update - https://github.com/anyone-protocol/jira-confluence/issues/224
+        image      = "ghcr.io/anyone-protocol/ator-protocol-dev:30f3adebb50d925aceb2fdc8fb3ad44ece92595d"
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
         ]
@@ -136,7 +137,7 @@ User anond
 
 AgreeToTerms 1
 
-Nickname ForteAnonCheckDev
+Nickname AnonCheckRelayDev
 
 FetchDirInfoEarly 1
 FetchDirInfoExtraEarly 1
