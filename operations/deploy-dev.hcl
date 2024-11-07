@@ -3,6 +3,12 @@ job "anon-check-dev" {
   type        = "service"
   namespace   = "ator-network"
 
+  update {
+    max_parallel      = 1
+    healthy_deadline  = "15m"
+    progress_deadline = "20m"
+  }
+
   group "anon-check-dev-group" {
     count = 1
 
@@ -51,6 +57,7 @@ job "anon-check-dev" {
 
       config {
         image      = "ghcr.io/anyone-protocol/anon-check:DEPLOY_TAG"
+        image_pull_timeout = "15m"
         ports      = ["http-port"]
         volumes    = [
           "local/logs/:/opt/check/data/logs"
@@ -108,6 +115,7 @@ job "anon-check-dev" {
 
       config {
         image      = "ghcr.io/anyone-protocol/ator-protocol-dev:latest"
+        image_pull_timeout = "15m"
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
         ]
