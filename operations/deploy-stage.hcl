@@ -114,7 +114,8 @@ job "anon-check-stage" {
       }
 
       config {
-        image      = "ghcr.io/anyone-protocol/ator-protocol-stage:latest"
+        # todo - Automate tag update - https://github.com/anyone-protocol/jira-confluence/issues/224
+        image      = "ghcr.io/anyone-protocol/ator-protocol-stage:30f3adebb50d925aceb2fdc8fb3ad44ece92595d"
         image_pull_timeout = "15m"
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
@@ -144,7 +145,7 @@ User anond
 
 AgreeToTerms 1
 
-Nickname ForteAnonCheckStage
+Nickname AnonCheckRelayStage
 
 FetchDirInfoEarly 1
 FetchDirInfoExtraEarly 1
