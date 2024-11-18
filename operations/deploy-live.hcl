@@ -70,7 +70,7 @@ job "anon-check-live" {
 
       resources {
         cpu    = 256
-        memory = 256
+        memory = 512
       }
 
       service {
@@ -127,7 +127,7 @@ job "anon-check-live" {
 
       resources {
         cpu    = 256
-        memory = 512
+        memory = 1024
       }
 
       service {
