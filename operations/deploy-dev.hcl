@@ -115,7 +115,7 @@ job "anon-check-dev" {
 
       config {
         # todo - Automate tag update - https://github.com/anyone-protocol/jira-confluence/issues/224
-        image      = "ghcr.io/anyone-protocol/ator-protocol-dev:30f3adebb50d925aceb2fdc8fb3ad44ece92595d"
+        image      = "ghcr.io/anyone-protocol/ator-protocol-dev:d903d014fe7d77a113791e27629e6f22380d9e57"
         image_pull_timeout = "15m"
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
