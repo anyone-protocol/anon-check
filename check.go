@@ -51,15 +51,22 @@ func main() {
 	Phttp.Handle("/", files)
 
 	// routes
-	http.HandleFunc("/", RootHandler(CompileTemplate(*basePath, "index.html"), exits, Phttp))
-	bulk := BulkHandler(CompileTemplate(*basePath, "bulk.html"), exits)
+	http.HandleFunc("/", enableCORS(RootHandler(CompileTemplate(*basePath, "index.html"), exits, Phttp)))
+	bulk := enableCORS(BulkHandler(CompileTemplate(*basePath, "bulk.html"), exits))
 	http.HandleFunc("/anonbulkexitlist", bulk)
 	//http.HandleFunc("/cgi-bin/TorBulkExitList.py", bulk)
 	http.HandleFunc("/api/bulk", bulk)
-	http.HandleFunc("/api/ip", APIHandler(exits))
+	http.HandleFunc("/api/ip", enableCORS(APIHandler(exits)))
 
 	// start the server
 	log.Printf("Listening on port: %d\n", *port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), nil))
 
+}
+
+func enableCORS(handler http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*") // Allow all origins
+		handler(w, r)                                      // Call the original handler
+	}
 }
