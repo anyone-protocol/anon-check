@@ -1,7 +1,7 @@
 job "anon-check-live" {
   datacenters = ["ator-fin"]
   type        = "service"
-  namespace   = "ator-network"
+  namespace   = "live-network"
 
   update {
     max_parallel      = 1
@@ -45,7 +45,7 @@ job "anon-check-live" {
 	{{ end -}}
             INTERVAL_MINUTES="60"
             EOH
-        destination = "secrets/file.env"
+        destination = "local/config.env"
         env         = true
       }
 
@@ -64,10 +64,6 @@ job "anon-check-live" {
         ]
       }
 
-      vault {
-        policies = ["ator-network-read"]
-      }
-
       resources {
         cpu    = 256
         memory = 512
@@ -78,11 +74,6 @@ job "anon-check-live" {
         port = "http-port"
         tags = [
           "traefik.enable=true",
-          "traefik.http.routers.check-live.rule=Host(`check-live.dmz.ator.dev`)",
-          "traefik.http.routers.check-live.entrypoints=https",
-          "traefik.http.routers.check-live.tls=true",
-          "traefik.http.routers.check-live.tls.certresolver=atorresolver",
-
           "traefik.http.routers.any1-check-live.rule=Host(`check.en.anyone.tech`)",
           "traefik.http.routers.any1-check-live.entrypoints=https",
           "traefik.http.routers.any1-check-live.tls=true",
@@ -119,10 +110,6 @@ job "anon-check-live" {
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
         ]
-      }
-
-      vault {
-        policies = ["ator-network-read"]
       }
 
       resources {

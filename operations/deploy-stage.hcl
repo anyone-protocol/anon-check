@@ -1,7 +1,7 @@
 job "anon-check-stage" {
   datacenters = ["ator-fin"]
   type        = "service"
-  namespace   = "ator-network"
+  namespace   = "stage-network"
 
   update {
     max_parallel      = 1
@@ -45,7 +45,7 @@ job "anon-check-stage" {
 	{{ end -}}
             INTERVAL_MINUTES="60"
             EOH
-        destination = "secrets/file.env"
+        destination = "local/config.env"
         env         = true
       }
 
@@ -64,10 +64,6 @@ job "anon-check-stage" {
         ]
       }
 
-      vault {
-        policies = ["ator-network-read"]
-      }
-
       resources {
         cpu    = 256
         memory = 256
@@ -78,11 +74,6 @@ job "anon-check-stage" {
         port = "http-port"
         tags = [
           "traefik.enable=true",
-          "traefik.http.routers.check-stage.rule=Host(`check-stage.dmz.ator.dev`)",
-          "traefik.http.routers.check-stage.entrypoints=https",
-          "traefik.http.routers.check-stage.tls=true",
-          "traefik.http.routers.check-stage.tls.certresolver=atorresolver",
-
           "traefik.http.routers.any1-check-stage.rule=Host(`check-stage.en.anyone.tech`)",
           "traefik.http.routers.any1-check-stage.entrypoints=https",
           "traefik.http.routers.any1-check-stage.tls=true",
@@ -120,10 +111,6 @@ job "anon-check-stage" {
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
         ]
-      }
-
-      vault {
-        policies = ["ator-network-read"]
       }
 
       resources {
