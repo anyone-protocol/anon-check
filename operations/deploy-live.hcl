@@ -38,13 +38,15 @@ job "anon-check-live" {
     task "anon-check-service-live-task" {
       driver = "docker"
 
+      consul {}
+
       template {
-        data        = <<EOH
-	{{- range nomadService "collector-live" }}
+        data        = <<-EOH
+	      {{- range service "collector-live" }}
   	    COLLECTOR_HOST="http://{{ .Address }}:{{ .Port }}"
-	{{ end -}}
-            INTERVAL_MINUTES="60"
-            EOH
+	      {{- end }}
+        INTERVAL_MINUTES="60"
+        EOH
         destination = "local/config.env"
         env         = true
       }
@@ -89,7 +91,7 @@ job "anon-check-live" {
           timeout  = "10s"
           check_restart {
             limit = 10
-            grace = "30s"
+            grace = "5m"
           }
         }
       }

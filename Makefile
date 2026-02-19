@@ -22,7 +22,7 @@ data/consensuses/: data/
 
 data/consensus: data/consensuses/
 	@echo "Getting latest consensus documents"
-	@find data/consensuses -mtime +31 | xargs rm -f
+	@find data/consensuses -type f -mtime +31 | xargs rm -f
 	@pushd data/consensuses/; \
 		wget -r -nH -nd -nc --no-parent --reject "index.html*" \
 			$(collector_url)$(consensuses_dir); \
@@ -41,7 +41,7 @@ data/consensus: data/consensuses/
 
 descriptors: data/descriptors/
 	@echo "Getting latest descriptors (This may take a while)"
-	@find data/descriptors -mtime +31 | xargs rm -f
+	@find data/descriptors -type f -mtime +31 | xargs rm -f
 	@pushd data/descriptors/; \
 		wget -r -nH -nd -nc --no-parent --reject "index.html*" \
 			$(collector_url)$(descriptors_dir); \
