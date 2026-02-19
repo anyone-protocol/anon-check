@@ -21,7 +21,6 @@ job "anon-check-live" {
     network {
       mode = "bridge"
       port "http-port" {
-        static       = 9288
         to           = 8000
         host_network = "wireguard"
       }
