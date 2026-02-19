@@ -38,13 +38,15 @@ job "anon-check-stage" {
     task "anon-check-service-stage-task" {
       driver = "docker"
 
+      consul {}
+
       template {
-        data        = <<EOH
-	{{- range nomadService "collector-stage" }}
+        data        = <<-EOH
+	      {{- range service "collector-stage" }}
   	    COLLECTOR_HOST="http://{{ .Address }}:{{ .Port }}"
-	{{ end -}}
-            INTERVAL_MINUTES="60"
-            EOH
+	      {{- end }}
+        INTERVAL_MINUTES="60"
+        EOH
         destination = "local/config.env"
         env         = true
       }
