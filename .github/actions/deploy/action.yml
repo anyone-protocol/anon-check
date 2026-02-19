@@ -1,4 +1,5 @@
 name: 'Deploy new version'
+description: 'Deploy a new version of the application to Nomad'
 inputs:
   environment:
     required: true
