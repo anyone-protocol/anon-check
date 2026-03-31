@@ -106,8 +106,7 @@ job "anon-check-stage" {
       }
 
       config {
-        # todo - Automate tag update - https://github.com/anyone-protocol/jira-confluence/issues/224
-        image      = "ghcr.io/anyone-protocol/ator-protocol-stage:d903d014fe7d77a113791e27629e6f22380d9e57"
+        image      = "ghcr.io/anyone-protocol/ator-protocol-stage:b0745662741bb2ab7cd6cbbcae6382e2fabf9e7b" // v0.4.9.13
         image_pull_timeout = "15m"
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
@@ -126,22 +125,22 @@ job "anon-check-stage" {
 
       template {
         change_mode = "noop"
-        data        = <<EOH
-DataDirectory /var/lib/anon/anon-data
+        data        = <<-EOH
+        DataDirectory /var/lib/anon/anon-data
 
-User anond
+        User anond
 
-AgreeToTerms 1
+        AgreeToTerms 1
 
-Nickname AnonCheckRelayStage
+        Nickname AnonCheckRelayStage
 
-FetchDirInfoEarly 1
-FetchDirInfoExtraEarly 1
-FetchUselessDescriptors 1
-UseMicrodescriptors 0
-DownloadExtraInfo 1
+        FetchDirInfoEarly 1
+        FetchDirInfoExtraEarly 1
+        FetchUselessDescriptors 1
+        UseMicrodescriptors 0
+        DownloadExtraInfo 1
 
-ORPort {{ env `NOMAD_PORT_orport` }}
+        ORPort {{ env `NOMAD_PORT_orport` }}
         EOH
         destination = "local/anonrc"
       }

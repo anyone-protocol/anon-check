@@ -106,7 +106,7 @@ job "anon-check-live" {
       }
 
       config {
-        image      = "ghcr.io/anyone-protocol/ator-protocol:bd506a47f917355bbe2742418481ec53bb89b261" // v0.4.9.11
+        image      = "ghcr.io/anyone-protocol/ator-protocol:b0745662741bb2ab7cd6cbbcae6382e2fabf9e7b" // v0.4.9.13
         image_pull_timeout = "15m"
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
@@ -125,22 +125,22 @@ job "anon-check-live" {
 
       template {
         change_mode = "noop"
-        data        = <<EOH
-DataDirectory /var/lib/anon/anon-data
+        data        = <<-EOH
+        DataDirectory /var/lib/anon/anon-data
 
-User anond
+        User anond
 
-AgreeToTerms 1
+        AgreeToTerms 1
 
-Nickname AnonCheckRelayLive
+        Nickname AnonCheckRelayLive
 
-FetchDirInfoEarly 1
-FetchDirInfoExtraEarly 1
-FetchUselessDescriptors 1
-UseMicrodescriptors 0
-DownloadExtraInfo 1
+        FetchDirInfoEarly 1
+        FetchDirInfoExtraEarly 1
+        FetchUselessDescriptors 1
+        UseMicrodescriptors 0
+        DownloadExtraInfo 1
 
-ORPort {{ env `NOMAD_PORT_orport` }}
+        ORPort {{ env `NOMAD_PORT_orport` }}
         EOH
         destination = "local/anonrc"
       }
