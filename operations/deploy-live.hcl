@@ -1,3 +1,14 @@
+variable "anon_check_tag" {
+  type        = string
+  description = "The anon-check container image tag to deploy for the anon-check-service-live-task"
+  default     = "98925af2cd1399491f2e35ddb79ca86adb1af626"
+}
+variable "anyone_client_tag" {
+  type        = string
+  description = "The anyone client container image tag to deploy for the anon-check-relay-live-task"
+  default     = "4be828669dd2dacffdae8abe650f56ab0de85643" // v0.4.10.2
+}
+
 job "anon-check-live" {
   datacenters = ["ator-fin"]
   type        = "service"
@@ -57,7 +68,7 @@ job "anon-check-live" {
       }
 
       config {
-        image      = "ghcr.io/anyone-protocol/anon-check:DEPLOY_TAG"
+        image      = "ghcr.io/anyone-protocol/anon-check:${var.anon_check_tag}"
         image_pull_timeout = "15m"
         ports      = ["http-port"]
         volumes    = [
@@ -106,7 +117,7 @@ job "anon-check-live" {
       }
 
       config {
-        image      = "ghcr.io/anyone-protocol/ator-protocol:b0745662741bb2ab7cd6cbbcae6382e2fabf9e7b" // v0.4.9.13
+        image      = "ghcr.io/anyone-protocol/ator-protocol-amd64:${var.anyone_client_tag}" // v0.4.9.13
         image_pull_timeout = "15m"
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"
