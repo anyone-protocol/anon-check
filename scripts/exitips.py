@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import sys
 import json
 import getopt
@@ -108,11 +109,13 @@ def main(consensuses, exit_lists):
                     })
                 r.Rules = rules
 
-    # output exits to file
-    with open("data/exit-policies", "w") as exit_file:
+    # output exits to file, via a rename so a kill mid-write cannot leave the
+    # server with a truncated file it refuses to start on
+    with open("data/exit-policies.tmp", "w") as exit_file:
         for e in exits:
             if exits[e].IsAllowed:
                 exit_file.write(json.dumps(exits[e].__dict__) + "\n")
+    os.replace("data/exit-policies.tmp", "data/exit-policies")
 
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{current_time}] - Ok!")
