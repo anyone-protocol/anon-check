@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import sys
 import json
 import getopt
@@ -16,10 +17,14 @@ from stem.exit_policy import AddressType
 
 class Router():
     def __init__(self, router, tminus):
+        # A consensus entry can carry no exit policy at all, which means it exits
+        # nothing. Reading it as an object took down the whole run, so every
+        # consensus after the first bad entry was lost.
+        policy = router.exit_policy
         self.Fingerprint = router.fingerprint
         self.Address = [router.address]
-        self.IsAllowedDefault = router.exit_policy._is_allowed_default
-        self.IsAllowed = router.exit_policy.is_exiting_allowed()
+        self.IsAllowedDefault = policy._is_allowed_default if policy else False
+        self.IsAllowed = policy.is_exiting_allowed() if policy else False
         self.Rules = []
         self.Tminus = tminus
 
@@ -83,7 +88,7 @@ def main(consensuses, exit_lists):
     # update all with server descriptor info
     for descriptor in parse_file("data/cached-descriptors",
                                  "server-descriptor 1.0", validate=False):
-        if descriptor.fingerprint in exits:
+        if descriptor.fingerprint in exits and descriptor.exit_policy is not None:
             r = exits[descriptor.fingerprint]
             r.IsAllowed = descriptor.exit_policy.is_exiting_allowed()
             if r.IsAllowed:
@@ -108,11 +113,13 @@ def main(consensuses, exit_lists):
                     })
                 r.Rules = rules
 
-    # output exits to file
-    with open("data/exit-policies", "w") as exit_file:
+    # output exits to file, via a rename so a kill mid-write cannot leave the
+    # server with a truncated file it refuses to start on
+    with open("data/exit-policies.tmp", "w") as exit_file:
         for e in exits:
             if exits[e].IsAllowed:
                 exit_file.write(json.dumps(exits[e].__dict__) + "\n")
+    os.replace("data/exit-policies.tmp", "data/exit-policies")
 
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{current_time}] - Ok!")

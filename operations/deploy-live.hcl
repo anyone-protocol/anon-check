@@ -1,7 +1,9 @@
 variable "anon_check_tag" {
   type        = string
   description = "The anon-check container image tag to deploy for the anon-check-service-live-task"
-  default     = "98925af2cd1399491f2e35ddb79ca86adb1af626"
+  // The deploy workflow substitutes this. A manual run needs
+  // -var=anon_check_tag=<sha>, so a stale image can never ship by accident.
+  default     = "DEPLOY_TAG"
 }
 variable "anyone_client_tag" {
   type        = string
@@ -101,7 +103,7 @@ job "anon-check-live" {
           timeout  = "10s"
           check_restart {
             limit = 10
-            grace = "5m"
+            grace = "15m"
           }
         }
       }
