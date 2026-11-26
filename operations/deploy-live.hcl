@@ -1,12 +1,14 @@
 variable "anon_check_tag" {
   type        = string
   description = "The anon-check container image tag to deploy for the anon-check-service-live-task"
-  default     = "98925af2cd1399491f2e35ddb79ca86adb1af626"
+  // Deploys are manual, so this pin is what ships. Bump it to the commit the
+  // image was built from, or override with -var=anon_check_tag=<sha>.
+  default     = "61fad827db196f23b621411d809f56ec19ef790a"
 }
 variable "anyone_client_tag" {
   type        = string
   description = "The anyone client container image tag to deploy for the anon-check-relay-live-task"
-  default     = "4be828669dd2dacffdae8abe650f56ab0de85643" // v0.4.10.2
+  default     = "631f3c9805513000a13113e8b48b6b4ce262689b" // v0.4.11.0-beta
 }
 
 job "anon-check-live" {
@@ -101,7 +103,7 @@ job "anon-check-live" {
           timeout  = "10s"
           check_restart {
             limit = 10
-            grace = "5m"
+            grace = "15m"
           }
         }
       }
@@ -117,7 +119,7 @@ job "anon-check-live" {
       }
 
       config {
-        image      = "ghcr.io/anyone-protocol/ator-protocol-amd64:${var.anyone_client_tag}" // v0.4.9.13
+        image      = "ghcr.io/anyone-protocol/ator-protocol-dev-amd64:${var.anyone_client_tag}"
         image_pull_timeout = "15m"
         volumes    = [
           "local/anonrc:/etc/anon/anonrc"

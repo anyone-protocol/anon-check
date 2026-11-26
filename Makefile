@@ -48,15 +48,24 @@ descriptors: data/descriptors/
 		popd
 	@echo Done
 
+# Only the newest files, not every file that looks recent. A re-download stamps
+# each file with the fetch time, and concatenating all of them wrote a 9 GB
+# cached-descriptors onto the volume. The hourly cron rebuilds this from the
+# relay's own cache anyway.
 data/cached-descriptors: descriptors
 	@echo "Concatenating data/descriptors/* into data/cached-descriptors"
 	@rm -f data/cached-descriptors
-	find data/descriptors -type f -mmin -60 | xargs cat > data/cached-descriptors
+	find data/descriptors -type f -printf '%T@ %p\n' | sort -rn | head -2 | cut -d' ' -f2- | xargs -r cat > data/cached-descriptors
 	@echo "Done"
+
+# Newest consensus files to read. The bulk exit list looks back 16 hours by
+# default and the collector is meant to keep 72, so reading every file on the
+# volume only slows startup.
+N ?= 72
 
 exits: data/consensus data/cached-descriptors # data/exit-addresses
 	@echo Generating exit-policies file
-	@python3 scripts/exitips.py
+	@python3 scripts/exitips.py -n $(N)
 	@echo Done
 
 data/langs: data/
